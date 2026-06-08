@@ -77,6 +77,41 @@ html, body { height: 100%; background: #f6f7f8; overflow: hidden; }
   display: inline-block; padding: 2px 6px; font-size: 10px;
   background: #f0f0f0; color: var(--sub); border-radius: 3px;
 }
+.script-internal-tag {
+  display: inline-block; padding: 2px 8px; font-size: 10px; font-weight: bold;
+  background: #FEE9E2; color: #9E3621; border-radius: 3px; margin-left: 4px;
+  letter-spacing: 0.05em;
+}
+.script-block.internal {
+  background: #FBF3F0;
+  border-left: 3px solid #C8492C;
+}
+.script-block.internal:hover { background: #F6E8E2; }
+.script-block.internal.active {
+  background: #FBE8E1; border-color: #C8492C;
+  box-shadow: 0 0 0 2px rgba(200,73,44,0.15);
+}
+.script-block.internal .script-section-tag {
+  background: #FEE9E2; color: #9E3621;
+}
+.preview-internal-placeholder {
+  width: 100%; height: 100%; aspect-ratio: 16/9;
+  background: #FBF3F0;
+  border: 2px dashed #C8492C;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 4cqw; text-align: center; color: #9E3621;
+  font-family: 'BIZ UDPGothic', sans-serif;
+}
+.preview-internal-placeholder .lock-icon {
+  font-size: 4cqw; margin-bottom: 1.5cqw; opacity: 0.6;
+}
+.preview-internal-placeholder .internal-h {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 2.2cqw; font-weight: 700; margin-bottom: 1cqw; color: #9E3621;
+}
+.preview-internal-placeholder .internal-d {
+  font-size: 1.2cqw; line-height: 1.7; color: #6B4839; max-width: 80%;
+}
 .script-num { font-size: 11px; color: var(--sub); margin-right: 6px; }
 .script-title { display: inline; font-size: 13px; font-weight: bold; color: var(--ink); }
 .script-body {
@@ -246,27 +281,29 @@ function renderScriptList() {
   const scripts = SCRIPTS_DATA[state.type] || {};
   slides.forEach((slide, i) => {
     const block = document.createElement('div');
-    block.className = 'script-block' + (i === state.index ? ' active' : '');
+    const internalClass = slide._internal ? ' internal' : '';
+    block.className = 'script-block' + (i === state.index ? ' active' : '') + internalClass;
     block.dataset.idx = i;
     const sec = slide._section;
     const sectionLabel = SECTION_LABELS[sec] || sec;
     const scriptText = scripts[sec] || '';
     const shared = slide._shared ? '<span class="script-shared-tag">共通</span>' : '';
+    const internalTag = slide._internal ? '<span class="script-internal-tag">🔒 内部資料 ／ 投影されません</span>' : '';
     const header = `
       <div>
         <span class="script-num">${String(i+1).padStart(2,'0')}</span>
         <span class="script-section-tag">${escHtml(sectionLabel)}</span>
-        ${shared}
+        ${shared}${internalTag}
       </div>
     `;
     const body = scriptText ? `<div class="script-body">${formatScript(scriptText)}</div>` : '';
     block.innerHTML = header + body;
     block.onclick = () => {
-      // Click: state changes, but no scroll — the clicked block is already visible to the user
       state.index = i;
       markActive();
       paintPreview();
-      sendState();
+      // INTERNAL: do not push state to audience — they stay on the last visible slide
+      if (!slide._internal) sendState();
     };
     pane.appendChild(block);
   });
@@ -286,13 +323,31 @@ function paintPreview() {
   const slides = SLIDES_DATA[state.type] || [];
   const slide = slides[state.index];
   const host = document.getElementById('previewSlide');
-  const nonCoverIdx = slides.slice(0, state.index + 1).filter(s => s.kind !== 'cover').length;
-  const nonCoverTotal = slides.filter(s => s.kind !== 'cover').length;
   const typeLabel = TYPE_META[state.type] ? TYPE_META[state.type].label : '';
   const coverEyebrow = TYPE_META[state.type] ? TYPE_META[state.type].coverEyebrow : '';
-  const pageInfo = slide && slide.kind !== 'cover' ? `${nonCoverIdx} / ${nonCoverTotal}` : '';
+
+  if (slide && slide._internal) {
+    // Internal slide: render the placeholder, no actual slide
+    host.innerHTML = `
+      <div class="preview-internal-placeholder">
+        <div class="lock-icon">🔒</div>
+        <div class="internal-h">内部資料 ／ 投影されません</div>
+        <div class="internal-d">このセクションは営業側のカンペとして台本を残してあります。<br>投影画面（先方の画面）には表示されません。</div>
+      </div>
+    `;
+    document.getElementById('metaSection').textContent = (SECTION_LABELS[slide._section] || '') + ' （内部資料）';
+    document.getElementById('metaPage').textContent = `${state.index + 1} / ${slides.length}`;
+    document.getElementById('navCounter').textContent = `${state.index + 1} / ${slides.length}`;
+    document.getElementById('btnPrev').disabled = state.index === 0;
+    document.getElementById('btnNext').disabled = state.index === slides.length - 1;
+    return;
+  }
+
+  // Page count: exclude cover AND internal slides
+  const visibleSlides = slides.filter(s => s.kind !== 'cover' && !s._internal);
+  const visibleIndex = visibleSlides.indexOf(slide);
+  const pageInfo = slide && slide.kind !== 'cover' ? `${visibleIndex + 1} / ${visibleSlides.length}` : '';
   renderSlide(host, slide, { typeLabel, pageInfo, coverEyebrow });
-  // Meta info
   document.getElementById('metaSection').textContent = SECTION_LABELS[slide._section] || '';
   document.getElementById('metaPage').textContent = `${state.index + 1} / ${slides.length}`;
   document.getElementById('navCounter').textContent = `${state.index + 1} / ${slides.length}`;
@@ -306,10 +361,12 @@ function navigate(dir) {
   const next = state.index + dir;
   if (next < 0 || next >= slides.length) return;
   state.index = next;
+  const slide = slides[state.index];
   markActive();
   paintPreview();
   scrollActiveIntoView();
-  sendState();
+  // INTERNAL guard: don't push state to audience when on internal
+  if (!slide._internal) sendState();
 }
 
 // ===== Wiring =====

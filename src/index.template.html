@@ -47,16 +47,18 @@ const host = document.getElementById('slideHost');
 function paint() {
   const slides = SLIDES_DATA[state.type] || [];
   const slide = slides[state.index];
+  // INTERNAL guard — if requested slide is internal, ignore the update entirely
+  if (slide && slide._internal) return;
   const slideEl = document.createElement('div');
   slideEl.style.width = '100%';
   slideEl.style.height = '100%';
   host.innerHTML = '';
   host.appendChild(slideEl);
-  // Compute display index across non-cover slides for footer label
-  const nonCoverIdx = slides.slice(0, state.index + 1).filter(s => s.kind !== 'cover').length;
-  const nonCoverTotal = slides.filter(s => s.kind !== 'cover').length;
+  // Page count: exclude cover AND internal slides
+  const visibleSlides = slides.filter(s => s.kind !== 'cover' && !s._internal);
+  const visibleIndex = visibleSlides.indexOf(slide);
+  const pageInfo = slide && slide.kind !== 'cover' ? `${visibleIndex + 1} / ${visibleSlides.length}` : '';
   const typeLabel = '';  // audience view: hide type label for politeness
-  const pageInfo = slide && slide.kind !== 'cover' ? `${nonCoverIdx} / ${nonCoverTotal}` : '';
   const coverEyebrow = TYPE_META[state.type] ? TYPE_META[state.type].coverEyebrow : '';
   renderSlide(slideEl, slide, { typeLabel, pageInfo, coverEyebrow });
 }

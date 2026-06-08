@@ -260,7 +260,8 @@
         }
       ],
       "_shared": true,
-      "_section": "rebuttal"
+      "_section": "rebuttal",
+      "_internal": true
     }
   ],
   "kindergarten": [
@@ -519,7 +520,8 @@
         }
       ],
       "_shared": true,
-      "_section": "rebuttal"
+      "_section": "rebuttal",
+      "_internal": true
     }
   ],
   "studio": [
@@ -778,7 +780,8 @@
         }
       ],
       "_shared": true,
-      "_section": "rebuttal"
+      "_section": "rebuttal",
+      "_internal": true
     }
   ]
 }

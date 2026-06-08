@@ -11,6 +11,8 @@ IMG_UNIT = 'img:unit_pair'
 IMG_USAGE = 'img:usage_scene'
 IMG_PARTS = 'img:parts'
 
+INTERNAL_SECTIONS = {'rebuttal'}  # never projected to audience, kept as presenter-only reference
+
 # ============================================================
 # COMMON slide content (used by all 3 types unchanged)
 # ============================================================
@@ -342,6 +344,8 @@ def build():
             else:
                 continue
             slide['_section'] = skey
+            if skey in INTERNAL_SECTIONS:
+                slide['_internal'] = True
             slides.append(slide)
         result[tkey] = slides
     return result
