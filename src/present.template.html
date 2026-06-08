@@ -261,7 +261,13 @@ function renderScriptList() {
     `;
     const body = scriptText ? `<div class="script-body">${formatScript(scriptText)}</div>` : '';
     block.innerHTML = header + body;
-    block.onclick = () => { state.index = i; paintPreview(); scrollActiveIntoView(); sendState(); markActive(); };
+    block.onclick = () => {
+      // Click: state changes, but no scroll — the clicked block is already visible to the user
+      state.index = i;
+      markActive();
+      paintPreview();
+      sendState();
+    };
     pane.appendChild(block);
   });
 }
@@ -272,7 +278,7 @@ function markActive() {
 }
 function scrollActiveIntoView() {
   const active = document.querySelector('.script-block.active');
-  if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if (active) active.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 // ===== Preview =====
@@ -300,9 +306,9 @@ function navigate(dir) {
   const next = state.index + dir;
   if (next < 0 || next >= slides.length) return;
   state.index = next;
+  markActive();
   paintPreview();
   scrollActiveIntoView();
-  markActive();
   sendState();
 }
 
