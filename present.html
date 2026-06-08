@@ -70,9 +70,9 @@ html, body { margin: 0; padding: 0; font-family: var(--font-jp); color: var(--in
 .slide-rule { display: none; }
 .slide-title {
   font-family: var(--font-serif);
-  font-size: 2.8cqw; font-weight: 700;
+  font-size: 3.0cqw; font-weight: 700;
   color: var(--green-dk); letter-spacing: 0.01em;
-  line-height: 1.35; margin: 0.2cqw 0 1.8cqw;
+  line-height: 1.4; margin: 0.2cqw 0 1.5cqw;
 }
 
 /* Footer */
@@ -131,49 +131,114 @@ html, body { margin: 0; padding: 0; font-family: var(--font-jp); color: var(--in
 .cover-meta { text-align: right; font-size: 0.85cqw; letter-spacing: 0.1em; opacity: 0.7; }
 
 /* ============================================================ INTRO ============================================================ */
-.intro-grid {
-  display: grid; grid-template-columns: 1.1fr 1fr; gap: 4cqw;
-  flex: 1; align-items: center; padding-top: 1cqw;
+/* INTRO - hero quote + details, with side image strip */
+.slide-intro .slide-inner { padding: 0; }
+.intro-shell {
+  display: grid; grid-template-columns: 30% 1fr;
+  width: 100%; height: 100%;
 }
-.intro-quote {
-  font-family: var(--font-serif);
-  font-size: 2.2cqw; line-height: 1.7; color: var(--green-dk);
-  font-weight: 500; letter-spacing: 0.02em;
+.intro-img { background: var(--paper); position: relative; overflow: hidden; }
+.intro-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.intro-img::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(26,74,42,0.18) 0%, rgba(26,74,42,0.45) 100%);
 }
-.intro-quote::before {
-  content: ""; display: block; width: 4cqw; height: 1px;
-  background: var(--wood); margin-bottom: 1.5cqw;
+.intro-img-eyebrow {
+  position: absolute; left: 2cqw; top: 2.4cqw;
+  color: var(--cream); font-size: 0.9cqw; letter-spacing: 0.25em;
+  text-transform: uppercase; font-weight: 700;
+  display: flex; align-items: center; gap: 0.7cqw; z-index: 2;
 }
-.intro-details { display: flex; flex-direction: column; gap: 1.4cqw; }
+.intro-img-eyebrow::before {
+  content: ""; width: 1.8cqw; height: 1px; background: var(--wood-lt);
+}
+.intro-content {
+  padding: 4.5cqw 4.5cqw 4cqw 4cqw;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative;
+}
+.intro-content .slide-title {
+  font-size: 2.5cqw; margin-bottom: 1.5cqw;
+}
+.intro-shared-tag {
+  position: absolute; top: 3cqw; right: 4.5cqw;
+  font-size: 0.85cqw; color: var(--sub);
+  padding: 0.15cqw 0.6cqw; border: 1px solid var(--hairline); border-radius: 999px;
+}
+.intro-details { display: flex; flex-direction: column; gap: 1.2cqw; max-width: 90%; }
 .intro-detail {
   display: grid; grid-template-columns: 9cqw 1fr; gap: 1.4cqw;
-  padding-bottom: 1.3cqw; border-bottom: 1px solid var(--hairline);
+  padding-bottom: 1.1cqw; border-bottom: 1px solid var(--hairline);
 }
 .intro-detail:last-child { border-bottom: none; }
 .intro-detail-label {
   font-size: 0.85cqw; letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--wood-dk); font-weight: 700; padding-top: 0.3cqw;
 }
-.intro-detail-body { font-size: 1.2cqw; color: var(--ink); line-height: 1.55; }
+.intro-detail-body { font-size: 1.15cqw; color: var(--ink); line-height: 1.55; }
+.slide-intro .slide-footer { display: none; }
 
 /* ============================================================ QUESTIONS ============================================================ */
-.questions-editorial {
-  display: flex; flex-direction: column; gap: 1.0cqw; flex: 1;
-  padding-top: 0.5cqw;
+/* QUESTIONS - two-column with image */
+.slide-questions .slide-inner { padding: 0; }
+.questions-shell {
+  display: grid; grid-template-columns: 38% 1fr;
+  width: 100%; height: 100%;
 }
+.questions-img {
+  background: var(--paper); position: relative; overflow: hidden;
+}
+.questions-img img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(0.92) brightness(0.95);
+}
+.questions-img::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(26,74,42,0.10) 0%, rgba(26,74,42,0.35) 100%);
+}
+.questions-img-eyebrow {
+  position: absolute; left: 2cqw; top: 2.4cqw;
+  color: var(--cream); font-size: 0.9cqw; letter-spacing: 0.25em;
+  text-transform: uppercase; font-weight: 700;
+  display: flex; align-items: center; gap: 0.7cqw; z-index: 2;
+}
+.questions-img-eyebrow::before {
+  content: ""; width: 1.8cqw; height: 1px; background: var(--wood-lt);
+}
+.questions-img-bignum {
+  position: absolute; left: 2cqw; bottom: 2cqw;
+  font-family: var(--font-display); font-style: italic;
+  font-size: 12cqw; color: rgba(255,255,255,0.18);
+  line-height: 0.85; font-weight: 500; z-index: 2;
+}
+.questions-content {
+  padding: 4.5cqw 4.5cqw 4cqw 4.5cqw;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative;
+}
+.questions-shared-tag {
+  position: absolute; top: 3cqw; right: 4.5cqw;
+  font-size: 0.85cqw; color: var(--sub);
+  padding: 0.15cqw 0.6cqw; border: 1px solid var(--hairline); border-radius: 999px;
+}
+.questions-content .slide-title {
+  font-size: 2.6cqw; margin-bottom: 2cqw;
+}
+.questions-editorial { display: flex; flex-direction: column; gap: 1.2cqw; }
 .question-item {
   display: grid; grid-template-columns: 5cqw 1fr; gap: 1.5cqw;
-  align-items: baseline; padding-bottom: 0.9cqw;
+  align-items: baseline; padding-bottom: 1.1cqw;
   border-bottom: 1px solid var(--hairline);
 }
 .question-item:last-child { border-bottom: none; }
 .question-mark {
-  font-family: var(--font-display); font-size: 2.8cqw; font-weight: 500;
-  color: var(--wood); font-style: italic; letter-spacing: 0;
+  font-family: var(--font-display); font-size: 2.6cqw; font-weight: 500;
+  color: var(--wood); font-style: italic;
 }
 .question-text {
-  font-size: 1.4cqw; color: var(--ink); line-height: 1.55; font-weight: 400;
+  font-size: 1.35cqw; color: var(--ink); line-height: 1.55;
 }
+.slide-questions .slide-footer { display: none; }
 
 /* ============================================================ OVERVIEW ============================================================ */
 .overview-grid {
@@ -210,12 +275,37 @@ html, body { margin: 0; padding: 0; font-family: var(--font-jp); color: var(--in
 }
 
 /* ============================================================ POSITION ============================================================ */
+/* POSITION - two-column with image right */
+.slide-position .slide-inner { padding: 0; }
+.position-shell {
+  display: grid; grid-template-columns: 1fr 38%;
+  width: 100%; height: 100%;
+}
+.position-content {
+  padding: 4.5cqw 3cqw 4cqw 4.5cqw;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative;
+}
+.position-shared-tag {
+  position: absolute; top: 3cqw; right: 3cqw;
+  font-size: 0.85cqw; color: var(--sub);
+  padding: 0.15cqw 0.6cqw; border: 1px solid var(--hairline); border-radius: 999px;
+}
+.position-content .slide-title {
+  font-size: 2.5cqw; margin-bottom: 1.5cqw;
+}
+.position-img { background: var(--paper); position: relative; overflow: hidden; }
+.position-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.position-img::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(220deg, transparent 50%, rgba(26,74,42,0.25) 100%);
+}
 .position-grid {
-  display: flex; flex-direction: column; gap: 1.4cqw; flex: 1; padding-top: 0.5cqw;
+  display: flex; flex-direction: column; gap: 1.3cqw;
 }
 .position-card {
   display: grid; grid-template-columns: 3cqw 1fr; gap: 1.5cqw;
-  padding: 1cqw 0; align-items: start;
+  padding: 0.9cqw 0; align-items: start;
   border-bottom: 1px solid var(--hairline);
 }
 .position-card:last-child { border-bottom: none; }
@@ -224,10 +314,11 @@ html, body { margin: 0; padding: 0; font-family: var(--font-jp); color: var(--in
   color: var(--wood); line-height: 1; padding-top: 0.2cqw;
 }
 .position-h {
-  font-family: var(--font-serif); font-size: 1.5cqw; font-weight: 600;
-  color: var(--green-dk); margin-bottom: 0.3cqw; letter-spacing: 0.02em;
+  font-family: var(--font-serif); font-size: 1.4cqw; font-weight: 600;
+  color: var(--green-dk); margin-bottom: 0.3cqw;
 }
-.position-d { font-size: 1.1cqw; color: var(--ink); line-height: 1.6; }
+.position-d { font-size: 1.05cqw; color: var(--ink); line-height: 1.6; }
+.slide-position .slide-footer { display: none; }
 
 /* ============================================================ USP ============================================================ */
 .slide-usp .slide-inner { padding: 2.5cqw 0 0 0; }
@@ -269,7 +360,8 @@ html, body { margin: 0; padding: 0; font-family: var(--font-jp); color: var(--in
 
 /* ============================================================ BASIC ============================================================ */
 .basic-grid {
-  display: flex; flex-direction: column; gap: 1.2cqw; flex: 1; padding-top: 0.5cqw;
+  display: flex; flex-direction: column; gap: 1.2cqw; flex: 1;
+  justify-content: center; padding-top: 0.5cqw;
 }
 .basic-card {
   display: grid; grid-template-columns: 3cqw 1fr; gap: 1.5cqw;
@@ -322,7 +414,7 @@ html, body { margin: 0; padding: 0; font-family: var(--font-jp); color: var(--in
 .qa-grid {
   display: grid; grid-template-columns: 1fr 1fr;
   column-gap: 2.2cqw; row-gap: 0;
-  flex: 1; align-content: start;
+  flex: 1; align-content: center;
 }
 .qa-card { padding: 0.95cqw 0; border-bottom: 1px solid var(--hairline); }
 .qa-q {
@@ -345,27 +437,53 @@ html, body { margin: 0; padding: 0; font-family: var(--font-jp); color: var(--in
 }
 
 /* ============================================================ CLOSING ============================================================ */
-.closing-grid {
-  flex: 1; display: flex; flex-direction: column;
-  justify-content: center; padding-top: 0;
+/* CLOSING - dark panel statement + cards */
+.slide-closing .slide-inner { padding: 0; }
+.closing-statement-panel {
+  background: var(--green-dk); color: var(--cream);
+  padding: 3.5cqw 4.5cqw 3.2cqw;
+  position: relative;
+}
+.closing-eyebrow {
+  font-size: 0.95cqw; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--wood-lt); font-weight: 700; margin-bottom: 1.5cqw;
+  display: flex; align-items: center; gap: 0.7cqw;
+}
+.closing-eyebrow::before { content: ""; width: 1.8cqw; height: 1px; background: var(--wood-lt); }
+.closing-shared-tag {
+  position: absolute; top: 3.5cqw; right: 4.5cqw;
+  font-size: 0.85cqw; color: var(--cream);
+  padding: 0.15cqw 0.6cqw; border: 1px solid rgba(255,255,255,0.3); border-radius: 999px;
+  opacity: 0.85;
+}
+.closing-title-big {
+  font-family: var(--font-serif); font-size: 2.8cqw; font-weight: 700;
+  line-height: 1.35; margin: 0 0 1.3cqw;
 }
 .closing-statement {
-  font-family: var(--font-serif); font-size: 1.7cqw;
-  color: var(--ink); line-height: 1.65; margin-bottom: 2cqw;
-  padding-bottom: 1.5cqw; border-bottom: 1px solid var(--hairline);
+  font-family: var(--font-serif); font-size: 1.5cqw;
+  line-height: 1.7; opacity: 0.92; max-width: 75%;
 }
-.closing-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5cqw; }
-.closing-card { padding: 1.2cqw 0; }
+.closing-cards {
+  padding: 3cqw 4.5cqw 4cqw;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5cqw;
+  flex: 1; align-content: center;
+}
+.closing-card { padding: 0; border-top: 2px solid var(--wood); padding-top: 1cqw; }
 .closing-card-num {
   font-family: var(--font-display); font-style: italic;
-  font-size: 1.8cqw; color: var(--wood); font-weight: 500;
-  line-height: 1; margin-bottom: 0.6cqw;
+  font-size: 2cqw; color: var(--wood); font-weight: 500;
+  line-height: 1; margin-bottom: 0.5cqw;
 }
 .closing-card-h {
-  font-family: var(--font-serif); font-weight: 600;
-  font-size: 1.3cqw; color: var(--green-dk); margin-bottom: 0.4cqw;
+  font-family: var(--font-serif); font-weight: 700;
+  font-size: 1.4cqw; color: var(--green-dk); margin-bottom: 0.4cqw;
 }
-.closing-card-d { font-size: 1.0cqw; color: var(--ink); line-height: 1.55; }
+.closing-card-d { font-size: 1.05cqw; color: var(--ink); line-height: 1.6; }
+.slide-closing .slide-footer {
+  position: absolute; bottom: 1.6cqw; left: 4.5cqw; right: 4.5cqw;
+  border-top: 1px solid var(--hairline);
+}
 
 /* ============================================================ SIMPLE ============================================================ */
 .simple-body {
@@ -381,23 +499,50 @@ html, body { margin: 0; padding: 0; font-family: var(--font-jp); color: var(--in
 }
 
 /* ============================================================ REBUTTAL ============================================================ */
+/* REBUTTAL - dark panel header + cards */
+.slide-rebuttal .slide-inner { padding: 0; }
+.rebuttal-header-panel {
+  background: var(--green-dk); color: var(--cream);
+  padding: 3cqw 4.5cqw 2.5cqw;
+  position: relative;
+}
+.rebuttal-eyebrow {
+  font-size: 0.95cqw; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--wood-lt); font-weight: 700; margin-bottom: 1.2cqw;
+  display: flex; align-items: center; gap: 0.7cqw;
+}
+.rebuttal-eyebrow::before { content: ""; width: 1.8cqw; height: 1px; background: var(--wood-lt); }
+.rebuttal-shared-tag {
+  position: absolute; top: 3cqw; right: 4.5cqw;
+  font-size: 0.85cqw; color: var(--cream);
+  padding: 0.15cqw 0.6cqw; border: 1px solid rgba(255,255,255,0.3); border-radius: 999px;
+}
+.rebuttal-title-big {
+  font-family: var(--font-serif); font-size: 2.8cqw; font-weight: 700;
+  line-height: 1.35; margin: 0;
+}
 .rebuttal-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw;
-  flex: 1; padding-top: 0.5cqw;
+  padding: 3cqw 4.5cqw 4cqw;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5cqw;
+  flex: 1; align-content: center;
 }
 .rebuttal-card {
-  padding: 1.5cqw 0; display: flex; flex-direction: column;
-  border-top: 2px solid var(--green-dk);
+  padding: 0; display: flex; flex-direction: column;
+  border-top: 2px solid var(--wood); padding-top: 1.2cqw;
 }
 .rebuttal-tag {
-  font-size: 0.85cqw; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--wood-dk); font-weight: 700; margin-bottom: 0.5cqw;
+  font-size: 0.85cqw; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--wood-dk); font-weight: 700; margin-bottom: 0.6cqw;
 }
 .rebuttal-h {
-  font-family: var(--font-serif); font-size: 1.7cqw; font-weight: 700;
+  font-family: var(--font-serif); font-size: 1.8cqw; font-weight: 700;
   color: var(--green-dk); margin-bottom: 1cqw; line-height: 1.4;
 }
 .rebuttal-d { font-size: 1.05cqw; color: var(--ink); line-height: 1.7; }
+.slide-rebuttal .slide-footer {
+  position: absolute; bottom: 1.6cqw; left: 4.5cqw; right: 4.5cqw;
+  border-top: 1px solid var(--hairline);
+}
 
 /* Empty state */
 .slide-empty {
@@ -558,7 +703,7 @@ html, body { height: 100%; background: #f6f7f8; overflow: hidden; }
 <script>const SLIDES_DATA = {"municipal": [{"kind": "cover", "eyebrow": "木製ユニット「ジラフユニット」のご提案", "title": "平時利用と災害時利用を両立する\n自治体向けソリューション", "subtitle": "〇〇市御担当者様", "company": "Reegle株式会社", "_shared": false, "_section": "cover"}, {"kind": "intro", "eyebrow": "会社紹介", "title": "木材を公共空間で活用", "subtitle": "Reegle株式会社について", "bullets": [{"h": "事業内容", "d": "木製ユニットの企画・開発"}, {"h": "テーマ", "d": "公共空間・地域施設での木材の実用的活用"}, {"h": "本日のご提案", "d": "平時利用 × 災害時利用の両立を実現する活用"}], "_shared": false, "_section": "intro"}, {"kind": "questions", "eyebrow": "アイスブレイク／現状把握", "title": "御自治体の現状をお聞かせください", "questions": ["ご興味をお持ちいただいた理由", "避難所運営や地域施設備品の見直しタイミング", "避難所における子どもスペース確保の取り組み状況"], "_shared": false, "_section": "icebreak"}, {"kind": "overview", "eyebrow": "サービス概要", "title": "木製ユニット「ジラフユニット」", "subtitle": "2サイズ・パーツ差込式の木製ユニット", "image": "img:unit_pair", "bullets": [{"h": "スタンダードサイズ", "d": "W2210×D2210×H1950／避難所間仕切り想定"}, {"h": "キッズサイズ", "d": "W1185×D1185×H1180／子ども向けスペース想定"}, {"h": "L型・I型の2種パーツ", "d": "工具不要、パーツを差し込むだけで設営完了"}], "footnote": "壁掛け保管で内装材としても活用可能", "_shared": true, "_section": "overview"}, {"kind": "position", "eyebrow": "関心・ポジショニング", "title": "「平時から使える備品の転用」が広がる", "bullets": [{"h": "非常時の備え → 平時転用へ", "d": "避難所対策の考え方が変化"}, {"h": "こども家庭庁の指針", "d": "避難所での子どもスペース確保が明示"}, {"h": "木材×環境施策の文脈", "d": "環境関連予算・環境譲与税の対象として検討可能"}], "_shared": false, "_section": "position"}, {"kind": "usp", "eyebrow": "3つのメリット", "title": "貴社にとっての3つのメリット", "merits": [{"n": "1", "h": "用途の多様性", "d": "平時利用と災害時利用の両立"}, {"n": "2", "h": "設営の簡便性", "d": "工具不要・職員のみで短時間設営"}, {"n": "3", "h": "木製ならではの安心感", "d": "視覚的に柔らかく威圧感が少ない"}], "bar": "一つの投資で「防災対策」「環境施策」「地域サービス向上」を同時実現", "_shared": true, "_section": "usp"}, {"kind": "basic", "eyebrow": "基本サービス", "title": "ユニット提供＋活用整理サポート", "bullets": [{"h": "木製ユニット本体のご提供", "d": "サイズ・数量を御社用途に合わせて構成"}, {"h": "活用シーンの整理", "d": "貴社の施設構成・想定シーンを伺い、配置や使い方を一緒に整理"}, {"h": "段階的な導入検討", "d": "「使えそうか」「難しそうか」の整理段階からお話可能"}], "_shared": true, "_section": "basic"}, {"kind": "achievement", "eyebrow": "実績紹介", "title": "教育機関連携・公共施設想定の検証", "image": "img:usage_scene", "bullets": [{"h": "教育機関と連携した空間づくり検討", "d": ""}, {"h": "公共性の高い施設を想定した活用検証", "d": ""}, {"h": "子どもが安心して過ごせる空間づくり", "d": "具体的な評価・フィードバック取得済み"}], "footnote": "自治体様への本格導入はこれからの段階", "_shared": false, "_section": "achievement"}, {"kind": "questions", "eyebrow": "ヒアリング", "title": "現状の課題と判断軸を整理", "questions": ["避難所運営でのプライバシー確保・動線整理", "子ども向けスペースの確保状況", "平時の地域施設の区切り・レイアウト変更ニーズ", "備品保管・運用負荷の改善余地", "判断責任者・導入時期・対象施設規模"], "_shared": false, "_section": "hearing"}, {"kind": "qa", "eyebrow": "想定Q&A", "title": "よくいただくご質問", "items": [{"q": "県外の木材で作れる？", "a": "杉・檜限定で対応可（広葉樹は要相談）"}, {"q": "避難所での安全性は？", "a": "用途別サイズ・仕様で対応"}, {"q": "設営時間は？", "a": "差込式で短時間／不慣れでも可"}, {"q": "使わない期間の保管は？", "a": "壁掛けで内装材として活用可"}, {"q": "木材の劣化は？", "a": "室内仕様、屋外ほどの劣化はなし"}, {"q": "大型は揺れる？", "a": "差込式で揺れる場合あり、ただし落ちない設計"}, {"q": "金物固定はできる？", "a": "安全性UP一方、コンセプト崩れあり／応相談"}, {"q": "価格は？", "a": "大12.3万円／キッズ7.9万円（次回お見積）"}], "_shared": false, "_section": "qa"}, {"kind": "closing", "eyebrow": "クロージング", "title": "次回、御社向けの具体プランをご提案", "bullets": [{"h": "貴社の体制・ご要望を伺う", "d": "今日のお話で気になった部分から深掘り"}, {"h": "最適プランを具体化", "d": "施設・用途に合わせた構成案とお見積"}, {"h": "次回日程のご提案", "d": "〇月〇日（〇曜日）／〇月〇日（〇曜日）のいずれかでお時間を"}], "_shared": true, "_section": "closing"}, {"kind": "simple", "eyebrow": "次回商談の日程決め", "title": "次回お時間の調整", "body": "午前／午後 → 時間帯 → 日時確定の順でご相談", "_shared": true, "_section": "next"}, {"kind": "rebuttal", "eyebrow": "切り返し", "title": "お声に応じた次の一歩", "cases": [{"h": "「検討したい」", "d": "判断材料を揃える意味で、御社施設に合わせた活用イメージを30分でご用意"}, {"h": "「見送りたい」", "d": "状況が変わったタイミングで急に必要になる分野。具体例を30分でご用意可能"}, {"h": "「会社の確認が必要」", "d": "社内共有しやすい概要資料をご用意、30分の確認会を後日"}], "_shared": true, "_section": "rebuttal"}], "kindergarten": [{"kind": "cover", "eyebrow": "木製ユニット「ジラフユニット」のご提案", "title": "園での日常利用と災害時利用を\n両立する木製ユニット", "subtitle": "〇〇幼稚園御担当者様", "company": "Reegle株式会社", "_shared": false, "_section": "cover"}, {"kind": "intro", "eyebrow": "会社紹介", "title": "木材を子どもの空間で活かす", "subtitle": "Reegle株式会社について", "bullets": [{"h": "事業内容", "d": "木製ユニットの企画・開発"}, {"h": "テーマ", "d": "保育・教育空間における木材の実用活用"}, {"h": "本日のご提案", "d": "園での日常利用×災害時利用の両立を実現する活用"}], "_shared": false, "_section": "intro"}, {"kind": "questions", "eyebrow": "アイスブレイク／現状把握", "title": "園の現状をお聞かせください", "questions": ["ご興味をお持ちいただいた理由", "園内設備・備品の見直しタイミング", "園内での子ども向けスペース・遊び空間の工夫"], "_shared": false, "_section": "icebreak"}, {"kind": "overview", "eyebrow": "サービス概要", "title": "木製ユニット「ジラフユニット」", "subtitle": "2サイズ・パーツ差込式の木製ユニット", "image": "img:unit_pair", "bullets": [{"h": "スタンダードサイズ", "d": "W2210×D2210×H1950／避難所間仕切り想定"}, {"h": "キッズサイズ", "d": "W1185×D1185×H1180／子ども向けスペース想定"}, {"h": "L型・I型の2種パーツ", "d": "工具不要、パーツを差し込むだけで設営完了"}], "footnote": "壁掛け保管で内装材としても活用可能", "_shared": true, "_section": "overview"}, {"kind": "position", "eyebrow": "関心・ポジショニング", "title": "木のぬくもりと多目的活用の両立", "bullets": [{"h": "木の質感が子どもに優しい", "d": "視覚・触覚で柔らかい印象"}, {"h": "遊び・学び・展示の多目的活用", "d": "レイアウト変更で空間転用可"}, {"h": "災害時の備えとしても機能", "d": "園での避難スペース確保にも転用可"}], "_shared": false, "_section": "position"}, {"kind": "usp", "eyebrow": "3つのメリット", "title": "貴社にとっての3つのメリット", "merits": [{"n": "1", "h": "用途の多様性", "d": "平時利用と災害時利用の両立"}, {"n": "2", "h": "設営の簡便性", "d": "工具不要・職員のみで短時間設営"}, {"n": "3", "h": "木製ならではの安心感", "d": "視覚的に柔らかく威圧感が少ない"}], "bar": "一つの投資で「防災対策」「環境施策」「地域サービス向上」を同時実現", "_shared": true, "_section": "usp"}, {"kind": "basic", "eyebrow": "基本サービス", "title": "ユニット提供＋活用整理サポート", "bullets": [{"h": "木製ユニット本体のご提供", "d": "サイズ・数量を御社用途に合わせて構成"}, {"h": "活用シーンの整理", "d": "貴社の施設構成・想定シーンを伺い、配置や使い方を一緒に整理"}, {"h": "段階的な導入検討", "d": "「使えそうか」「難しそうか」の整理段階からお話可能"}], "_shared": true, "_section": "basic"}, {"kind": "achievement", "eyebrow": "実績紹介", "title": "教育機関での空間活用", "image": "img:usage_scene", "bullets": [{"h": "教育機関と連携した空間づくりの検討", "d": ""}, {"h": "子どもが安心して過ごせる空間として評価", "d": ""}, {"h": "キッズサイズの活用検証も進行中", "d": ""}], "_shared": false, "_section": "achievement"}, {"kind": "questions", "eyebrow": "ヒアリング", "title": "園内の課題と判断軸を整理", "questions": ["園内空間で工夫されている点・課題感", "子どもが落ち着くスペース・コーナーの確保状況", "備品の入れ替え・追加のタイミング", "園独自のイベント・行事で空間転用が必要な場面", "判断責任者・導入時期・必要数量"], "_shared": false, "_section": "hearing"}, {"kind": "qa", "eyebrow": "想定Q&A", "title": "よくいただくご質問", "items": [{"q": "安全性は？", "a": "子ども想定の用途では安定性重視仕様"}, {"q": "設営時間は？", "a": "差込式で短時間／職員のみで対応可"}, {"q": "使わない期間の保管は？", "a": "壁掛けで内装材として活用可"}, {"q": "木材の劣化は？", "a": "室内仕様、屋外ほどの劣化はなし"}, {"q": "揺れは大丈夫？", "a": "差込式で揺れる場合あり、ただし落ちない設計"}, {"q": "金物固定は？", "a": "コンセプト崩れあり／応相談"}, {"q": "価格は？", "a": "大12.3万円／キッズ7.9万円（次回お見積）"}], "_shared": false, "_section": "qa"}, {"kind": "closing", "eyebrow": "クロージング", "title": "次回、御社向けの具体プランをご提案", "bullets": [{"h": "貴社の体制・ご要望を伺う", "d": "今日のお話で気になった部分から深掘り"}, {"h": "最適プランを具体化", "d": "施設・用途に合わせた構成案とお見積"}, {"h": "次回日程のご提案", "d": "〇月〇日（〇曜日）／〇月〇日（〇曜日）のいずれかでお時間を"}], "_shared": true, "_section": "closing"}, {"kind": "simple", "eyebrow": "次回商談の日程決め", "title": "次回お時間の調整", "body": "午前／午後 → 時間帯 → 日時確定の順でご相談", "_shared": true, "_section": "next"}, {"kind": "rebuttal", "eyebrow": "切り返し", "title": "お声に応じた次の一歩", "cases": [{"h": "「検討したい」", "d": "判断材料を揃える意味で、御社施設に合わせた活用イメージを30分でご用意"}, {"h": "「見送りたい」", "d": "状況が変わったタイミングで急に必要になる分野。具体例を30分でご用意可能"}, {"h": "「会社の確認が必要」", "d": "社内共有しやすい概要資料をご用意、30分の確認会を後日"}], "_shared": true, "_section": "rebuttal"}], "studio": [{"kind": "cover", "eyebrow": "木製ユニット「ジラフユニット」のご提案", "title": "撮影空間に新しい表情を\nもたらす木製ユニット", "subtitle": "〇〇スタジオ御担当者様", "company": "Reegle株式会社", "_shared": false, "_section": "cover"}, {"kind": "intro", "eyebrow": "会社紹介", "title": "木材で撮影空間を立体化", "subtitle": "Reegle株式会社について", "bullets": [{"h": "事業内容", "d": "木製ユニットの企画・開発"}, {"h": "テーマ", "d": "空間に意味を持たせる木材の活用"}, {"h": "本日のご提案", "d": "撮影セット・装飾としての多用途活用"}], "_shared": false, "_section": "intro"}, {"kind": "questions", "eyebrow": "アイスブレイク／現状把握", "title": "スタジオ運営の現状をお聞かせください", "questions": ["ご興味をお持ちいただいた理由", "セット・装飾の入れ替えタイミングや頻度", "撮影テイスト・空間演出で工夫されている点"], "_shared": false, "_section": "icebreak"}, {"kind": "overview", "eyebrow": "サービス概要", "title": "木製ユニット「ジラフユニット」", "subtitle": "2サイズ・パーツ差込式の木製ユニット", "image": "img:unit_pair", "bullets": [{"h": "スタンダードサイズ", "d": "W2210×D2210×H1950／避難所間仕切り想定"}, {"h": "キッズサイズ", "d": "W1185×D1185×H1180／子ども向けスペース想定"}, {"h": "L型・I型の2種パーツ", "d": "工具不要、パーツを差し込むだけで設営完了"}], "footnote": "壁掛け保管で内装材としても活用可能", "_shared": true, "_section": "overview"}, {"kind": "position", "eyebrow": "関心・ポジショニング", "title": "木の質感が映える撮影空間", "bullets": [{"h": "木の温かみが映える写真", "d": "ナチュラル系・家族写真・キッズ撮影に好相性"}, {"h": "組替自由で背景バリエ", "d": "L型・I型の組替で空間を可変化"}, {"h": "保管時も内装材として機能", "d": "使わない期間も視覚的に「邪魔にならない」"}], "_shared": false, "_section": "position"}, {"kind": "usp", "eyebrow": "3つのメリット", "title": "貴社にとっての3つのメリット", "merits": [{"n": "1", "h": "用途の多様性", "d": "平時利用と災害時利用の両立"}, {"n": "2", "h": "設営の簡便性", "d": "工具不要・職員のみで短時間設営"}, {"n": "3", "h": "木製ならではの安心感", "d": "視覚的に柔らかく威圧感が少ない"}], "bar": "一つの投資で「防災対策」「環境施策」「地域サービス向上」を同時実現", "_shared": true, "_section": "usp"}, {"kind": "basic", "eyebrow": "基本サービス", "title": "ユニット提供＋活用整理サポート", "bullets": [{"h": "木製ユニット本体のご提供", "d": "サイズ・数量を御社用途に合わせて構成"}, {"h": "活用シーンの整理", "d": "貴社の施設構成・想定シーンを伺い、配置や使い方を一緒に整理"}, {"h": "段階的な導入検討", "d": "「使えそうか」「難しそうか」の整理段階からお話可能"}], "_shared": true, "_section": "basic"}, {"kind": "achievement", "eyebrow": "実績紹介", "title": "空間演出での活用検証", "image": "img:usage_scene", "bullets": [{"h": "装飾・背景としての活用検証", "d": ""}, {"h": "木の質感を活かした空間演出", "d": ""}, {"h": "空間の表情を変える組替パターン", "d": ""}], "_shared": false, "_section": "achievement"}, {"kind": "questions", "eyebrow": "ヒアリング", "title": "スタジオ運営の課題と判断軸を整理", "questions": ["セット入替の頻度・コスト感", "撮影テイストのバリエーション拡張ニーズ", "リピート撮影で「飽き」を防ぐ工夫の必要性", "保管スペースとセット管理の課題", "判断責任者・導入時期・必要数量"], "_shared": false, "_section": "hearing"}, {"kind": "qa", "eyebrow": "想定Q&A", "title": "よくいただくご質問", "items": [{"q": "撮影時の使いやすさは？", "a": "工具不要・差込式／撮影現場で組替可"}, {"q": "保管はどうする？", "a": "壁掛けで内装材として活用可"}, {"q": "木材の質感は？", "a": "杉・檜の自然な質感、写真に映えやすい"}, {"q": "色味調整はできる？", "a": "塗装・染色は応相談（要打合せ）"}, {"q": "組替の所要時間は？", "a": "短時間で組替可"}, {"q": "揺れは？", "a": "差込式で揺れる場合あり、落ちない設計"}, {"q": "価格は？", "a": "大12.3万円／キッズ7.9万円（次回お見積）"}], "_shared": false, "_section": "qa"}, {"kind": "closing", "eyebrow": "クロージング", "title": "次回、御社向けの具体プランをご提案", "bullets": [{"h": "貴社の体制・ご要望を伺う", "d": "今日のお話で気になった部分から深掘り"}, {"h": "最適プランを具体化", "d": "施設・用途に合わせた構成案とお見積"}, {"h": "次回日程のご提案", "d": "〇月〇日（〇曜日）／〇月〇日（〇曜日）のいずれかでお時間を"}], "_shared": true, "_section": "closing"}, {"kind": "simple", "eyebrow": "次回商談の日程決め", "title": "次回お時間の調整", "body": "午前／午後 → 時間帯 → 日時確定の順でご相談", "_shared": true, "_section": "next"}, {"kind": "rebuttal", "eyebrow": "切り返し", "title": "お声に応じた次の一歩", "cases": [{"h": "「検討したい」", "d": "判断材料を揃える意味で、御社施設に合わせた活用イメージを30分でご用意"}, {"h": "「見送りたい」", "d": "状況が変わったタイミングで急に必要になる分野。具体例を30分でご用意可能"}, {"h": "「会社の確認が必要」", "d": "社内共有しやすい概要資料をご用意、30分の確認会を後日"}], "_shared": true, "_section": "rebuttal"}]};</script>
 <script>const SCRIPTS_DATA = {"municipal": {"intro": "本日はお時間をいただき、誠にありがとうございます。\n Reegle株式会社の〇〇と申します。どうぞよろしくお願いいたします。\n\n弊社は、木材を公共空間や地域施設の中で、より実用的かつ意味のある形で活用することをテーマに、木製ユニットの企画・開発を行っている会社です。\n\n本日は、御自治体での平時利用と災害時利用の両立という観点から、「こういう使い方ができそうだな」とイメージしていただける内容を中心にお話しできればと思っています。\n 気になる点がございましたら何でもご質問ください。", "icebreak": "〇〇様、最初に1点お伺いしてもよろしいでしょうか？\n 先日は突然のお電話にも関わらず、ご興味をいただけた理由を先にお伺いしてもよろしいでしょうか？\n\nありがとうございます。そういった背景からご興味をお持ちいただいたんですね。\n\n差し支えなければ、御自治体では避難所運営や地域施設の備品について、見直しや検討が発生するタイミングはどのような場面が多いでしょうか。\n\nなるほど、そういった状況なのですね。\n\nもう一点だけ、避難所における子ども向けスペースの確保について、現在何か取り組まれていることはございますか。\n\nありがとうございます。\n 今のお話を伺って、今日ご紹介する内容は、きっとお役に立てる部分が多いと感じました。", "overview": "本日ご紹介したいのが、弊社で開発している木製ユニット「ジラフ」です。\n\n用途に応じてサイズが2種類あり、避難所での間仕切り用途を想定した大きいサイズと、子ども向けスペースに適したキッズサイズがあります。\n どちらも工具を使わず、パーツを差し込むだけで組み立てられる構造になっており、専門業者を呼ばずに職員の方だけで設営できます。\n\nまた、ジラフは **L型とI型の2種類のパーツで構成されている**ため、シンプルな構造で扱いやすく、壁に掛けて保管することで内装材のように見せることもできます。\n\n「普段は使わない防災備品」ではなく、日常の中で使いながら備えるという考え方を形にしたプロダクトです。", "position": "最近は、避難所対策を「非常時の備え」だけで完結させるのではなく、平時から使える備品をいざという時に転用するという考え方が広がっています。\n\n特に、子供家庭庁からも「避難所での子供スペース確保」が示されている中で、キッズサイズのように普段は地域施設で使えて、災害時にそのまま活用できる備品は、運用面でも無理が出にくいと感じています。\n\nまた、木製という点から木材利用促進や環境配慮の文脈とも相性が良く、環境関連予算や環境譲与税の対象として検討しやすいケースもあるため、「防災」と「環境施策」を分けずに考えられる点も特徴です。", "usp": "御社にメリットがあるポイントを3つにまとめますね。\n\n一つ目は、使い道を一つに限定しない点です。\n 平時は地域施設や公共施設の空間づくりに使いながら、災害時には避難所の間仕切りや子どもスペースに転用できます。\n\n二つ目は、設営のしやすさです。\n 工具が不要で、専門知識がなくても短時間で組み立てができるため、職員の方の負担を増やさずに運用できます。\n\n最後に、木製ならではの安心感です。\n 視覚的にも柔らかく、特に子どもが過ごす空間でも、威圧感を与えにくい点は評価いただいています。", "basic": "弊社では、木製ユニットそのもののご提供に加えて、御自治体の施設構成や想定シーンを伺いながら、どのような配置や使い方が現実的かを一緒に整理するところまでサポートしています。\n\nいきなり導入を前提にするのではなく、「こういう場面なら使えそうか」「ここは難しそうか」といった整理の段階からお話しできればと考えています。", "achievement": "自治体様への本格導入はこれからの段階ではありますが、教育機関と連携した空間づくりの検討や、公共性の高い施設を想定した活用検証などを進めてきています。\n\nその中で、特に「子どもが安心して過ごせる空間づくり」という観点では、具体的な評価やフィードバックもいただいています。", "hearing": "すいません、ここまで一方的にお話ししてしまいました。ここからは御社の現状や、今日お聞きいただいた内容の中で「ここが気になる」「少し深掘りしたい」と感じられた部分を伺えればと思っています。\n ありがとうございます。\n\n## **先方の取り組み・課題について**\n\nでは、現在の体制で特に改善したい点や課題を感じていらっしゃる部分をお聞かせください。\n\n避難所運営で、プライバシー確保や動線整理に課題を感じる場面はありますか。\n\n子ども向けスペースの確保について、現状の備品で不足を感じることはありますか。\n\n平時の地域施設で、空間の区切りやレイアウト変更が必要になる場面はありますか。\n\n備品の保管場所や運用負荷について、改善したい点はありますか。\n\n## **BANT情報の確認**\n\n実現可能な進め方を設計するため、差し支えない範囲で確認させてください。\n\n今回のような備品導入について、最終的な判断はどなたが中心になることが多いでしょうか。\n\n導入を検討される場合、時期としてはどれくらいを想定されていますか。\n\n導入にあたり、必要な数量や対象施設の規模感はどれくらいでしょうか。\n\n検討を進める際に、他部署との連携や調整が必要になるケースはありますか。", "qa": "## **Q1：県外の木材で作ってもらうことは可能ですか。**\n\nA1：はい、指定いただいた仕様の材料をお送りいただき、弊社側で加工して返送する形で対応が可能です。ただし、対応できる樹種には条件があり、基本的には杉・檜に限定しております。広葉樹については品質管理が難しいため、原則として対象外ですが、内容によってはご相談を承ることもございます。\n\n## **Q2：避難所での安全性は問題ありませんか。**\n\nA2：用途に応じたサイズや使い方を前提にご提案しています。特に子どもスペース用途では、安定性を重視した仕様を想定しています。\n\n## **Q3：設営にはどのくらい時間がかかりますか。**\n\nA3：パーツを差し込む構造のため、慣れていない方でも短時間で組み立てが可能です。\n\n## **Q4：平時に使わない期間は邪魔になりませんか。**\n\nA4：壁掛けなどで保管でき、内装の一部として見せる形での活用も可能です。\n\n## **Q5：木材の劣化は心配ありませんか。**\n\nA5：室内仕様のため屋外ほどの劣化は起きにくいですが、木材の特性上、細かな割れが入る可能性はあります。\n\n## **Q6：大きいサイズは揺れるのではないでしょうか。**\n\nA6：差し込み式の構造上、揺れを感じる場合があります。ただし、落ちないように設計されており、「揺れるけれど落ちないなら問題ない」というお声と、「揺れる時点で不安」というお声の両方があるため、用途に応じて適切なサイズをご提案しています。\n\n## **Q7：金物で固定する仕様にはできますか。**\n\nA7：金物固定については、過去に検討したことがあります。安全性や耐久性が上がる一方で、部品点数が増えて金額が上がることや、「一枚の板から綺麗に切り取る」というコンセプトを崩してしまうため、現在の提供仕様としては採用していません。ただ、検討の背景や理由については丁寧にご説明できますので、必要であればお伝えいたします。\n\n## **Q8：価格はいくらぐらいになりますか。**\n\n **A8：サイズによって異なりますが、大きいサイズが12万3,000円、キッズサイズが7万9,000円となっております。数量や組み合わせによって最適な構成が変わるため、御自治体の施設に合わせた形で、次回の商談時に具体的なご提案とあわせてお見積りをご用意できます。**", "closing": "ありがとうございます。\n もしよろしければ、まずは御社の体制やご希望を伺いながら、最適なプランを具体化させていただければと思っています。\n\nたとえば「〇月〇日（〇曜日）」か「〇月〇日（〇曜日）」にお時間いただくことは可能でしょうか。\n ご都合のよろしい方をお聞かせいただけると助かります。", "next": "ありがとうございます。\n お時間は午前と午後はどちらがご都合よろしいでしょうか。\n\nありがとうございます。\n ●時と●時ではどちらがよろしいでしょうか。\n\nありがとうございます。\n では、●月●日の●時でお時間を頂戴できればと思いますのでよろしくお願いいたします。\n\n本日、私の方からのご案内は以上となりますが、何かご不明点はございますか。\n （回答不可の場合は次回回答を案内）\n\n本日はありがとうございました。", "rebuttal": "## **検討したいと言われた場合**\n\nありがとうございます。\n 先ほどのお話と重なりますが、判断材料を揃える意味でも、一度御社の施設に合わせた具体的な活用イメージをご覧いただく方が整理しやすいかと思います。\n 三十分ほどお時間をいただければ、御社の状況に合わせた内容をご用意できますので、軽い情報整理の場としてお時間いただければと思います。\n\n## **見送りたいと言われた場合**\n\n率直にお話しいただきありがとうございます。\n 御社の状況を踏まえると、今は優先度が高くないというご判断は理解いたしました。ただ、避難所対応や子どもスペースの整備は、状況が変わったタイミングで急に検討が必要になることも多い分野です。\n 次回は御社の業務に当てはめた具体例をご用意できますので、情報整理の場として三十分ほどお時間をいただければと思います。\n\n## **会社の確認が必要と言われた場合**\n\n承知いたしました。\n 確認を進めていただくうえでも、概要と活用イメージをまとめた資料があると共有しやすいかと思います。\n 先ほど触れた内容を御社向けに整理した資料をご用意しますので、確認後の状況を伺う形で三十分ほどお時間いただければと思います。\n\n幼稚園向け"}, "kindergarten": {"intro": "本日はお時間をいただき、誠にありがとうございます。\n Reegle株式会社の〇〇と申します。どうぞよろしくお願いいたします。\n\n弊社は、木材を公共空間や地域施設の中で、より実用的かつ意味のある形で活用することをテーマに、木製ユニットの企画・開発を行っている会社です。\n\n本日は、幼稚園・保育園様での**日常利用と安全性の両立**という観点から、「こういう使い方ができそうだな」とイメージしていただける内容を中心にお話しできればと思っています。\n 気になる点がございましたら何でもご質問ください。", "icebreak": "〇〇様、最初に1点お伺いしてもよろしいでしょうか？\n 先日は突然のお電話にも関わらず、ご興味をいただけた理由を先にお伺いしてもよろしいでしょうか？\n\nありがとうございます。そういった背景からご興味をお持ちいただいたんですね。\n\n差し支えなければ、園内の環境づくりや備品の見直しは、どのようなタイミングで発生することが多いでしょうか。\n\nなるほど、そういった状況なのですね。\n\nもう一点だけ、子どもたちが過ごすスペースの確保や、行事・イベント時のレイアウト変更について、現在何か課題に感じていらっしゃることはございますか。\n\nありがとうございます。\n 今のお話を伺って、今日ご紹介する内容は、きっとお役に立てる部分が多いと感じました。", "overview": "本日ご紹介したいのが、弊社で開発している木製ユニット「ジラフ」です。\n\n用途に応じてサイズが2種類あり、園内のキッズスペースづくりに適したキッズサイズと、空間の区切りや展示用途にも使える大きいサイズがあります。\n\nどちらも工具を使わず、パーツを差し込むだけで組み立てられる構造になっており、先生方だけで安全に設営できます。\n\nまた、ジラフは **L型とI型の2種類のパーツで構成されている**ため、シンプルで扱いやすく、壁に掛けて保管することで園内の雰囲気づくりにも活用できます。\n\n「普段は使わない備品」ではなく、日常の中で使いながら備えるという考え方を形にしたプロダクトです。", "position": "最近は、園内の環境づくりにおいて、**安全性・柔軟性・子どもが安心できる空間**がより重視される傾向があります。\n\n特に、子どもたちが過ごすスペースを「固定」ではなく、行事や季節に合わせて柔軟に変えられる備品は、運用面でも無理が出にくいと感じています。\n\nまた、木製という点から、園内の雰囲気づくりや情操教育の観点でも相性が良く、視覚的にも柔らかい印象を与えられる点が特徴です。", "usp": "御社にメリットがあるポイントを3つにまとめますね。\n\n一つ目は、使い道を一つに限定しない点です。\n 普段はキッズスペースや読み聞かせコーナーとして使いながら、行事の展示や写真撮影スペースとしても活用できます。\n\n二つ目は、設営のしやすさです。\n 工具が不要で、専門知識がなくても短時間で組み立てができるため、先生方の負担を増やさずに運用できます。\n\n最後に、木製ならではの安心感です。\n 視覚的にも柔らかく、特に子どもが過ごす空間でも、威圧感を与えにくい点は評価いただいています。", "basic": "弊社では、木製ユニットそのもののご提供に加えて、園内の構成や想定シーンを伺いながら、どのような配置や使い方が現実的かを一緒に整理するところまでサポートしています。\n\nいきなり導入を前提にするのではなく、「こういう場面なら使えそうか」「ここは難しそうか」といった整理の段階からお話しできればと考えています。", "achievement": "本格導入はこれからの段階ではありますが、教育機関と連携した空間づくりの検討や、公共性の高い施設を想定した活用検証などを進めてきています。\n\nその中で、特に「子どもが安心して過ごせる空間づくり」という観点では、具体的な評価やフィードバックもいただいています。", "hearing": "すいません、ここまで一方的にお話ししてしまいました。ここからは御社の現状や、今日お聞きいただいた内容の中で「ここが気になる」「少し深掘りしたい」と感じられた部分を伺えればと思っています。\n ありがとうございます。\n\n## **先方の取り組み・課題について**\n\nでは、現在の体制で特に改善したい点や課題を感じていらっしゃる部分をお聞かせください。\n\n園内のキッズスペースづくりで、特に課題を感じる場面はありますか。\n\n行事やイベント時に、レイアウト変更が必要になることはありますか。\n\n子どもたちが安心して過ごせる空間づくりで、改善したい点はありますか。\n\n備品の保管場所や運用負荷について、何かお困りの点はありますか。\n\n## **BANT情報の確認**\n\n実現可能な進め方を設計するため、差し支えない範囲で確認させてください。\n\n今回のような備品導入について、最終的な判断はどなたが中心になることが多いでしょうか。\n\n導入を検討される場合、時期としてはどれくらいを想定されていますか。\n\n導入にあたり、必要な数量や対象スペースの規模感はどれくらいでしょうか。\n\n検討を進める際に、他の先生方や保護者会との調整が必要になるケースはありますか。", "qa": "Q1：県外の木材で作ってもらうことは可能ですか。\n A1：はい、指定いただいた仕様の材料をお送りいただき、弊社側で加工して返送する形で対応が可能です。ただし、対応できる樹種には条件があり、基本的には杉・檜に限定しております。広葉樹については品質管理が難しいため、原則として対象外ですが、内容によってはご相談を承ることもございます。\n\nQ2：子どもが触っても安全ですか。\n A2：用途に応じたサイズや使い方を前提にご提案しています。特にキッズスペース用途では、安定性を重視した仕様を想定しています。\n\nQ3：設営にはどのくらい時間がかかりますか。\n A3：パーツを差し込む構造のため、慣れていない方でも短時間で組み立てが可能です。\n\nQ4：平時に使わない期間は邪魔になりませんか。\n A4：壁掛けなどで保管でき、内装の一部として見せる形での活用も可能です。\n\nQ5：木材の劣化は心配ありませんか。\n A5：室内仕様のため屋外ほどの劣化は起きにくいですが、木材の特性上、細かな割れが入る可能性はあります。\n\nQ6：大きいサイズは揺れるのではないでしょうか。\n A6：差し込み式の構造上、揺れを感じる場合があります。ただし、落ちないように設計されており、「揺れるけれど落ちないなら問題ない」というお声と、「揺れる時点で不安」というお声の両方があるため、用途に応じて適切なサイズをご提案しています。\n\nQ7：金物で固定する仕様にはできますか。\n A7：金物固定については、過去に検討したことがあります。安全性や耐久性が上がる一方で、部品点数が増えて金額が上がることや、「一枚の板から綺麗に切り取る」というコンセプトを崩してしまうため、現在の提供仕様としては採用していません。ただ、検討の背景や理由については丁寧にご説明できますので、必要であればお伝えいたします。\n\n**Q8：価格はいくらぐらいになりますか。**\n **A8：サイズによって異なりますが、大きいサイズが12万3,000円、キッズサイズが7万9,000円となっております。園内のスペースや用途によって最適な組み合わせが変わるため、次回の商談時に、御社の環境に合わせた具体的な構成案とあわせてお見積りをご用意できます。**", "closing": "ありがとうございます。\n もしよろしければ、まずは御社の体制やご希望を伺いながら、最適なプランを具体化させていただければと思っています。\n\nたとえば「〇月〇日（〇曜日）」か「〇月〇日（〇曜日）」にお時間いただくことは可能でしょうか。\n ご都合のよろしい方をお聞かせいただけると助かります。", "next": "ありがとうございます。\n お時間は午前と午後はどちらがご都合よろしいでしょうか。\n\nありがとうございます。\n ●時と●時ではどちらがよろしいでしょうか。\n\nありがとうございます。\n では、●月●日の●時でお時間を頂戴できればと思いますのでよろしくお願いいたします。\n\n本日、私の方からのご案内は以上となりますが、何かご不明点はございますか。\n （回答不可の場合は次回回答を案内）\n\n本日はありがとうございました。", "rebuttal": "## **検討したいと言われた場合**\n\nありがとうございます。\n 先ほどのお話と重なりますが、判断材料を揃える意味でも、一度御社の園内に合わせた具体的な活用イメージをご覧いただく方が整理しやすいかと思います。\n 三十分ほどお時間をいただければ、御社の状況に合わせた内容をご用意できますので、軽い情報整理の場としてお時間いただければと思います。\n\n## **見送りたいと言われた場合**\n\n率直にお話しいただきありがとうございます。\n 御社の状況を踏まえると、今は優先度が高くないというご判断は理解いたしました。ただ、園内環境の整備は、状況が変わったタイミングで急に検討が必要になることも多い分野です。\n 次回は御社の業務に当てはめた具体例をご用意できますので、情報整理の場として三十分ほどお時間をいただければと思います。\n\n## **会社の確認が必要と言われた場合**\n\n承知いたしました。\n 確認を進めていただくうえでも、概要と活用イメージをまとめた資料があると共有しやすいかと思います。\n 先ほど触れた内容を御社向けに整理した資料をご用意しますので、確認後の状況を伺う形で三十分ほどお時間いただければと思います。\n\n写真スタジオ向け"}, "studio": {"intro": "本日はお時間をいただき、誠にありがとうございます。\n Reegle株式会社の〇〇と申します。どうぞよろしくお願いいたします。\n\n弊社は、木材を公共空間や地域施設の中で、より実用的かつ意味のある形で活用することをテーマに、木製ユニットの企画・開発を行っている会社です。\n\n本日は、写真スタジオ様での **撮影空間づくりとキッズ向け安全性の両立** という観点から、「こういう使い方ができそうだな」とイメージしていただける内容を中心にお話しできればと思っています。\n 気になる点がございましたら何でもご質問ください。", "icebreak": "〇〇様、最初に1点お伺いしてもよろしいでしょうか？\n 先日は突然のお電話にも関わらず、ご興味をいただけた理由を先にお伺いしてもよろしいでしょうか？\n\nありがとうございます。そういった背景からご興味をお持ちいただいたんですね。\n\n差し支えなければ、撮影スペースや背景セットの見直しは、どのようなタイミングで発生することが多いでしょうか。\n\nなるほど、そういった状況なのですね。\n\nもう一点だけ、特にキッズ撮影やファミリー撮影の際に、空間づくりや安全面で課題に感じていらっしゃることはございますか。\n\nありがとうございます。\n 今のお話を伺って、今日ご紹介する内容は、きっとお役に立てる部分が多いと感じました。", "overview": "本日ご紹介したいのが、弊社で開発している木製ユニット「ジラフ」です。\n\n用途に応じてサイズが2種類あり、キッズ撮影の背景づくりに適したキッズサイズと、空間の区切りや大型背景としても使える大きいサイズがあります。\n\nどちらも工具を使わず、パーツを差し込むだけで組み立てられる構造になっており、スタッフの方だけで安全に設営できます。\n\nまた、ジラフは **L型とI型の2種類のパーツで構成されている**ため、シンプルで扱いやすく、壁に掛けて保管することでスタジオの雰囲気づくりにも活用できます。\n\n「普段は使わない備品」ではなく、日常の撮影セットとして使いながら、季節イベントやキャンペーンにも柔軟に転用できるプロダクトです。", "position": "最近は、写真スタジオ様の中でも、**季節ごとの背景変更やキッズ向け空間の安全性**がより重視される傾向があります。\n\n特に、子どもが動き回る撮影では、背景セットの安定性や、柔らかい雰囲気づくりが求められることが多いと感じています。\n\nまた、木製という点から、ナチュラルな世界観を演出しやすく、写真のトーンにも馴染みやすい点が特徴です。", "usp": "御社にメリットがあるポイントを3つにまとめますね。\n\n一つ目は、使い道を一つに限定しない点です。\n 普段はキッズ撮影の背景や待機スペースとして使いながら、季節イベントやキャンペーン撮影にも転用できます。\n\n二つ目は、設営のしやすさです。\n 工具が不要で、専門知識がなくても短時間で組み立てができるため、スタッフの方の負担を増やさずに運用できます。\n\n最後に、木製ならではの安心感です。\n 視覚的にも柔らかく、特に子どもが過ごす空間でも、威圧感を与えにくい点は評価いただいています。", "basic": "弊社では、木製ユニットそのもののご提供に加えて、スタジオの構成や撮影シーンを伺いながら、どのような配置や使い方が現実的かを一緒に整理するところまでサポートしています。\n\nいきなり導入を前提にするのではなく、「こういう場面なら使えそうか」「ここは難しそうか」といった整理の段階からお話しできればと考えています。", "achievement": "本格導入はこれからの段階ではありますが、教育機関と連携した空間づくりの検討や、公共性の高い施設を想定した活用検証などを進めてきています。\n\nその中で、特に「子どもが安心して過ごせる空間づくり」という観点では、具体的な評価やフィードバックもいただいています。", "hearing": "すいません、ここまで一方的にお話ししてしまいました。ここからは御社の現状や、今日お聞きいただいた内容の中で「ここが気になる」「少し深掘りしたい」と感じられた部分を伺えればと思っています。\n ありがとうございます。\n\n## **先方の取り組み・課題について**\n\nでは、現在の体制で特に改善したい点や課題を感じていらっしゃる部分をお聞かせください。\n\nキッズ撮影の背景づくりで、特に課題を感じる場面はありますか。\n\n季節イベントやキャンペーン時に、レイアウト変更が必要になることはありますか。\n\n子どもが安心して過ごせる空間づくりで、改善したい点はありますか。\n\n備品の保管場所や運用負荷について、何かお困りの点はありますか。\n\n## **BANT情報の確認**\n\n実現可能な進め方を設計するため、差し支えない範囲で確認させてください。\n\n今回のような備品導入について、最終的な判断はどなたが中心になることが多いでしょうか。\n\n導入を検討される場合、時期としてはどれくらいを想定されていますか。\n\n導入にあたり、必要な数量や対象スペースの規模感はどれくらいでしょうか。\n\n検討を進める際に、他のスタッフの方との調整が必要になるケースはありますか。", "qa": "Q1：県外の木材で作ってもらうことは可能ですか。\n A1：はい、指定いただいた仕様の材料をお送りいただき、弊社側で加工して返送する形で対応が可能です。ただし、対応できる樹種には条件があり、基本的には杉・檜に限定しております。広葉樹については品質管理が難しいため、原則として対象外ですが、内容によってはご相談を承ることもございます。\n\nQ2：子どもが触っても安全ですか。\n A2：用途に応じたサイズや使い方を前提にご提案しています。特にキッズ撮影用途では、安定性を重視した仕様を想定しています。\n\nQ3：設営にはどのくらい時間がかかりますか。\n A3：パーツを差し込む構造のため、慣れていない方でも短時間で組み立てが可能です。\n\nQ4：平時に使わない期間は邪魔になりませんか。\n A4：壁掛けなどで保管でき、内装の一部として見せる形での活用も可能です。\n\nQ5：木材の劣化は心配ありませんか。\n A5：室内仕様のため屋外ほどの劣化は起きにくいですが、木材の特性上、細かな割れが入る可能性はあります。\n\nQ6：大きいサイズは揺れるのではないでしょうか。\n A6：差し込み式の構造上、揺れを感じる場合があります。ただし、落ちないように設計されており、「揺れるけれど落ちないなら問題ない」というお声と、「揺れる時点で不安」というお声の両方があるため、用途に応じて適切なサイズをご提案しています。\n\nQ7：金物で固定する仕様にはできますか。\n A7：金物固定については、過去に検討したことがあります。安全性や耐久性が上がる一方で、部品点数が増えて金額が上がることや、「一枚の板から綺麗に切り取る」というコンセプトを崩してしまうため、現在の提供仕様としては採用していません。ただ、検討の背景や理由については丁寧にご説明できますので、必要であればお伝えいたします。\n\n**Q8：価格はいくらぐらいになりますか。**\n **A8：サイズによって異なりますが、大きいサイズが12万3,000円、キッズサイズが7万9,000円となっております。数量や組み合わせによって最適な構成が変わるため、御社の撮影スペースに合わせた形で、次回の商談時に具体的なご提案とあわせてお見積りをご用意できます。**", "closing": "ありがとうございます。\n もしよろしければ、まずは御社の体制やご希望を伺いながら、最適なプランを具体化させていただければと思っています。\n\nたとえば「〇月〇日（〇曜日）」か「〇月〇日（〇曜日）」にお時間いただくことは可能でしょうか。\n ご都合のよろしい方をお聞かせいただけると助かります。", "next": "ありがとうございます。\n お時間は午前と午後はどちらがご都合よろしいでしょうか。\n\nありがとうございます。\n ●時と●時ではどちらがよろしいでしょうか。\n\nありがとうございます。\n では、●月●日の●時でお時間を頂戴できればと思いますのでよろしくお願いいたします。\n\n本日、私の方からのご案内は以上となりますが、何かご不明点はございますか。\n （回答不可の場合は次回回答を案内）\n\n本日はありがとうございました。", "rebuttal": "## **検討したいと言われた場合**\n\nありがとうございます。\n 先ほどのお話と重なりますが、判断材料を揃える意味でも、一度御社の撮影スペースに合わせた具体的な活用イメージをご覧いただく方が整理しやすいかと思います。\n 三十分ほどお時間をいただければ、御社の状況に合わせた内容をご用意できますので、軽い情報整理の場としてお時間いただければと思います。\n\n## **見送りたいと言われた場合**\n\n率直にお話しいただきありがとうございます。\n 御社の状況を踏まえると、今は優先度が高くないというご判断は理解いたしました。ただ、撮影空間の整備は、状況が変わったタイミングで急に検討が必要になることも多い分野です。\n 次回は御社の業務に当てはめた具体例をご用意できますので、情報整理の場として三十分ほどお時間をいただければと思います。\n\n## **会社の確認が必要と言われた場合**\n\n承知いたしました。\n 確認を進めていただくうえでも、概要と活用イメージをまとめた資料があると共有しやすいかと思います。\n 先ほど触れた内容を御社向けに整理した資料をご用意しますので、確認後の状況を伺う形で三十分ほどお時間いただければと思います。\n\nコレモク\n\n# **コルモク用台本**\n\nターゲット：工務店／ハウスメーカー\n\n# **【イントロ】**\n\n本日はお時間をいただき、誠にありがとうございます。\n Reegle株式会社の〇〇と申します。どうぞよろしくお願いいたします。\n\n弊社は、木材を公共空間や地域施設の中で、より実用的かつ意味のある形で活用することをテーマに、木製ユニットや木造建築フレームの企画・開発を行っております。\n\n本日は、御社が今後取り組まれる非住宅案件や小規模木造建築において、「こういう場面で使えそうだな」とイメージしていただける内容を中心にお話しできればと思っています。\n 気になる点がございましたら何でもご質問ください。\n\n# **【アイスブレイク／現状把握】**\n\n〇〇様、最初に1点お伺いしてもよろしいでしょうか？\n 先日は突然のお電話にも関わらず、ご興味をいただけた理由を先にお伺いしてもよろしいでしょうか？\n\nありがとうございます。そういった背景からご興味をお持ちいただいたんですね。\n\n差し支えなければ、御社では非住宅木造の案件や、小規模建築の相談が発生するタイミングはどのような場面が多いでしょうか。\n\nなるほど、そういった状況なのですね。\n\nもう一点だけ、非住宅案件に取り組む際の課題や、構造・コスト面でお困りのことがあれば教えていただけますか。\n\nありがとうございます。\n 今のお話を伺って、今日ご紹介する内容は、きっとお役に立てる部分が多いと感じました。\n\n# **【サービス概要】**\n\n本日ご紹介したいのが、弊社で開発している **木造建築フレーム「コレモク」** です。\n\nコレモクは、非住宅木造の小規模建築を想定した **規格化された木造フレーム** で、倉庫・作業場・店舗・ガレージ・小規模事務所など、幅広い用途に対応できる構造体になっています。\n\n特徴として、あらかじめ構造を規格化しているため、設計の手間を抑えながら、短工期・ローコストで建築できる点があります。\n\nまた、木材を使ったフレームでありながら、必要な強度を確保しつつ、施工のしやすさも両立しています。\n\n# **【関心・ポジショニング】**\n\n最近は、非住宅木造の需要が増えており、「鉄骨ほど大げさにしたくないが、プレハブでは物足りない」というニーズが多くなっています。\n\n特に、倉庫や作業場、店舗などの小規模建築では、**コスト・工期・意匠性のバランス** が求められるケースが増えていると感じています。\n\nその中で、規格化された木造フレームは、「設計負荷を抑えながら、木造の意匠性を活かせる」という点で、御社のような施工会社様にとって扱いやすい選択肢になると考えています。\n\n# **【 興味 】『ほう』と思わせる／USPサマリー**\n\n御社にメリットがあるポイントを3つにまとめますね。\n\n一つ目は、設計負荷の軽減です。\n 規格化されたフレームをベースにするため、ゼロから構造を組む必要がなく、非住宅案件でもスムーズに着手できます。\n\n二つ目は、短工期・ローコストです。\n 部材が標準化されているため、材料手配や施工の段取りが組みやすく、結果として工期短縮やコスト抑制につながります。\n\n最後に、用途の幅広さです。\n 倉庫・作業場・店舗・ガレージなど、用途を限定せずに提案できるため、御社の商談機会を広げるきっかけにもなります。\n\n# **【基本サービス】**\n\n弊社では、コレモクのフレーム提供に加えて、御社の案件内容を伺いながら、どの規格が適しているか、どのような構成が現実的かを一緒に整理するところまでサポートしています。\n\nいきなり導入を前提にするのではなく、「こういう案件なら使えそうか」「ここは難しそうか」といった整理の段階からお話しできればと考えています。\n\n# **【実績紹介】**\n\n本格導入はこれからの段階ではありますが、施工会社様からの相談や、非住宅木造の検討案件において、「鉄骨ほど大げさにしたくない」「プレハブより意匠性を出したい」といった声をいただいています。\n\nその中で、特に「小規模建築の選択肢が増える」という点で、具体的な評価やフィードバックもいただいています。\n\n# **【ヒアリング（提案）】**\n\nすいません、ここまで一方的にお話ししてしまいました。ここからは御社の現状や、今日お聞きいただいた内容の中で「ここが気になる」「少し深掘りしたい」と感じられた部分を伺えればと思っています。\n ありがとうございます。\n\n## **先方の取り組み・課題について**\n\nでは、現在の体制で特に改善したい点や課題を感じていらっしゃる部分をお聞かせください。\n\n非住宅木造の案件で、構造やコスト面で課題を感じる場面はありますか。\n\n小規模建築の相談があった際、提案の幅に制約を感じることはありますか。\n\n工期や材料手配で、改善したい点はありますか。\n\n御社の得意分野と、今後広げたい領域があれば教えてください。\n\n## **BANT情報の確認**\n\n実現可能な進め方を設計するため、差し支えない範囲で確認させてください。\n\n今回のような建築フレーム導入について、最終的な判断はどなたが中心になることが多いでしょうか。\n\n導入を検討される場合、時期としてはどれくらいを想定されていますか。\n\n対象となる案件の規模感や用途はどれくらいでしょうか。\n\n検討を進める際に、設計部門や他部署との調整が必要になるケースはありますか。\n\n# **【想定される先方からの質疑＆その応答】**\n\nQ1：どんな用途に使えますか。\n A1：倉庫・作業場・店舗・ガレージ・小規模事務所など、幅広い用途に対応できます。規格化されたフレームなので、用途に合わせて柔軟にご提案できます。\n\nQ2：構造の強度は問題ありませんか。\n A2：必要な強度を確保したうえで規格化しているため、一般的な小規模非住宅用途であれば問題なく対応できます。\n\nQ3：設計の自由度はどれくらいありますか。\n A3：規格フレームをベースにしつつ、間取りや外観は案件に合わせて調整できます。完全自由設計より負荷を抑えながら、一定の自由度を確保できます。\n\nQ4：工期はどれくらい短縮できますか。\n A4：部材が標準化されているため、材料手配や施工の段取りが組みやすく、結果として短工期につながります。\n\nQ5：木材の劣化は心配ありませんか。\n A5：屋内・屋根下での使用を前提にしているため、一般的な木造建築と同様の扱いになります。木材特有の細かな割れが入る可能性はありますが、構造上の問題にはなりません。\n\nQ6：金物固定の仕様にはできますか。\n A6：金物固定については、過去に検討したことがあります。安全性や耐久性が上がる一方で、部材点数が増えてコストが上がることや、コンセプトを崩してしまうため、現在の提供仕様としては採用していません。ただ、検討の背景については丁寧にご説明できます。\n\nQ7：対応エリアはどこまでですか。\n A7：地域によって材料供給の条件が異なるため、まずは案件の場所を伺いながら、対応可否を確認させていただいています。\n\nQ8：価格はいくらぐらいになりますか。\n A8：規模や用途によって大きく変わるため、まずは案件の条件を伺ったうえで、次回の商談時に具体的な構成案とあわせてお見積りをご用意できます。\n\n# **【クロージング】**\n\nありがとうございます。\n もしよろしければ、まずは御社の体制やご希望を伺いながら、最適なプランを具体化させていただければと思っています。\n\nたとえば「〇月〇日（〇曜日）」か「〇月〇日（〇曜日）」にお時間いただくことは可能でしょうか。\n ご都合のよろしい方をお聞かせいただけると助かります。\n\n# **【次回商談の日程決め】**\n\nありがとうございます。\n お時間は午前と午後はどちらがご都合よろしいでしょうか。\n\nありがとうございます。\n ●時と●時ではどちらがよろしいでしょうか。\n\nありがとうございます。\n では、●月●日の●時でお時間を頂戴できればと思いますのでよろしくお願いいたします。\n\n本日、私の方からのご案内は以上となりますが、何かご不明点はございますか。\n （回答不可の場合は次回回答を案内）\n\n本日はありがとうございました。\n\n# **【クロージング後の切り返し】**\n\n## **検討したいと言われた場合**\n\nありがとうございます。\n 先ほどのお話と重なりますが、判断材料を揃える意味でも、一度御社の案件に合わせた具体的な構成案をご覧いただく方が整理しやすいかと思います。\n 三十分ほどお時間をいただければ、御社の状況に合わせた内容をご用意できますので、軽い情報整理の場としてお時間いただければと思っています。\n\n## **見送りたいと言われた場合**\n\n率直にお話しいただきありがとうございます。\n 御社の状況を踏まえると、今は優先度が高くないというご判断は理解いたしました。ただ、小規模建築の相談は急に発生することも多いため、次回は御社の業務に当てはめた具体例をご用意できますので、情報整理の場として三十分ほどお時間をいただければと思います。\n\n## **会社の確認が必要と言われた場合**\n\n承知いたしました。\n 確認を進めていただくうえでも、概要と構成イメージをまとめた資料があると共有しやすいかと思います。\n 先ほど触れた内容を御社向けに整理した資料をご用意しますので、確認後の状況を伺う形で三十分ほどお時間いただければと思います。"}};</script>
 <script>/* ==========================================================
-   Reegle Giraffe Sales Presentation - Renderer v2
+   Reegle Giraffe Sales Presentation - Renderer v3
    ========================================================== */
 
 const TYPE_META = {
@@ -574,10 +719,22 @@ const SECTION_LABELS = {
   qa: '想定Q&A', closing: 'クロージング', next: '次回日程', rebuttal: '切り返し',
 };
 
+// Map sections to images for richer side-panel usage
+const SECTION_IMG = {
+  intro: 'parts',
+  icebreak: 'parts',
+  hearing: 'detail_kids',
+};
+
 function resolveImage(ref) {
   if (!ref || !ref.startsWith('img:')) return null;
   const key = ref.slice(4);
   return (typeof IMAGES !== 'undefined' && IMAGES[key]) || null;
+}
+
+function imgFor(section) {
+  if (!SECTION_IMG[section]) return null;
+  return resolveImage('img:' + SECTION_IMG[section]);
 }
 
 function renderSlide(container, slide, opts = {}) {
@@ -613,32 +770,53 @@ function renderSlide(container, slide, opts = {}) {
     `;
   }
   else if (kind === 'intro') {
+    const img = imgFor('intro');
     const bullets = slide.bullets || [];
     inner.innerHTML = `
-      ${headerHTML(slide)}
-      <div class="intro-grid">
-        <div class="intro-quote">${nl2br(esc(slide.subtitle || ''))}<br><br>${esc(bullets[0]?.d || '')}</div>
-        <div class="intro-details">
-          ${bullets.map(b => `
-            <div class="intro-detail">
-              <div class="intro-detail-label">${esc(b.h)}</div>
-              <div class="intro-detail-body">${esc(b.d)}</div>
-            </div>
-          `).join('')}
+      <div class="intro-shell">
+        <div class="intro-img">
+          ${img ? `<img src="${img}" alt="">` : ''}
+          <div class="intro-img-eyebrow">${esc(slide.eyebrow || '')}</div>
+        </div>
+        <div class="intro-content">
+          ${slide._shared ? '<div class="intro-shared-tag">共通</div>' : ''}
+          <h2 class="slide-title">${nl2br(esc(slide.title || ''))}</h2>
+          <div class="intro-details">
+            ${bullets.map(b => `
+              <div class="intro-detail">
+                <div class="intro-detail-label">${esc(b.h)}</div>
+                <div class="intro-detail-body">${esc(b.d)}</div>
+              </div>
+            `).join('')}
+          </div>
         </div>
       </div>
     `;
   }
   else if (kind === 'questions') {
+    // Use parts image for icebreak, detail_kids for hearing
+    const section = slide._section;
+    const img = imgFor(section) || resolveImage('img:parts');
+    const bigNum = section === 'hearing' ? '02' : '01';
     inner.innerHTML = `
-      ${headerHTML(slide)}
-      <div class="questions-editorial">
-        ${(slide.questions || []).map((q, i) => `
-          <div class="question-item">
-            <span class="question-mark">${String(i + 1).padStart(2, '0')}.</span>
-            <span class="question-text">${esc(q)}</span>
+      <div class="questions-shell">
+        <div class="questions-img">
+          ${img ? `<img src="${img}" alt="">` : ''}
+          <div class="questions-img-eyebrow">${esc(slide.eyebrow || '')}</div>
+          <div class="questions-img-bignum">${bigNum}</div>
+        </div>
+        <div class="questions-content">
+          ${slide._shared ? '<div class="questions-shared-tag">共通</div>' : ''}
+          <h2 class="slide-title">${nl2br(esc(slide.title || ''))}</h2>
+          <div class="questions-editorial">
+            ${(slide.questions || []).map((q, i) => `
+              <div class="question-item">
+                <span class="question-mark">${String(i + 1).padStart(2, '0')}.</span>
+                <span class="question-text">${esc(q)}</span>
+              </div>
+            `).join('')}
           </div>
-        `).join('')}
+        </div>
       </div>
     `;
   }
@@ -662,18 +840,26 @@ function renderSlide(container, slide, opts = {}) {
     `;
   }
   else if (kind === 'position') {
+    const img = resolveImage('img:hero_usage') || resolveImage('img:usage_scene');
     inner.innerHTML = `
-      ${headerHTML(slide)}
-      <div class="position-grid">
-        ${(slide.bullets || []).map((b, i) => `
-          <div class="position-card">
-            <div class="position-num">${String(i + 1).padStart(2, '0')}</div>
-            <div class="position-body">
-              <div class="position-h">${esc(b.h)}</div>
-              ${b.d ? `<div class="position-d">${esc(b.d)}</div>` : ''}
-            </div>
+      <div class="position-shell">
+        <div class="position-content">
+          ${slide._shared ? '<div class="position-shared-tag">共通</div>' : ''}
+          <div class="slide-header"><div class="slide-eyebrow">${esc(slide.eyebrow || '')}</div></div>
+          <h2 class="slide-title">${nl2br(esc(slide.title || ''))}</h2>
+          <div class="position-grid">
+            ${(slide.bullets || []).map((b, i) => `
+              <div class="position-card">
+                <div class="position-num">${String(i + 1).padStart(2, '0')}</div>
+                <div class="position-body">
+                  <div class="position-h">${esc(b.h)}</div>
+                  ${b.d ? `<div class="position-d">${esc(b.d)}</div>` : ''}
+                </div>
+              </div>
+            `).join('')}
           </div>
-        `).join('')}
+        </div>
+        <div class="position-img">${img ? `<img src="${img}" alt="">` : ''}</div>
       </div>
     `;
   }
@@ -745,18 +931,20 @@ function renderSlide(container, slide, opts = {}) {
   else if (kind === 'closing') {
     const bullets = slide.bullets || [];
     inner.innerHTML = `
-      ${headerHTML(slide)}
-      <div class="closing-grid">
-        <div class="closing-statement">${esc('御社の体制やご要望を伺いながら、施設・用途に合わせた最適プランを具体化させていただきます。')}</div>
-        <div class="closing-cards">
-          ${bullets.map((b, i) => `
-            <div class="closing-card">
-              <div class="closing-card-num">${String(i + 1).padStart(2, '0')}</div>
-              <div class="closing-card-h">${esc(b.h)}</div>
-              <div class="closing-card-d">${esc(b.d)}</div>
-            </div>
-          `).join('')}
-        </div>
+      <div class="closing-statement-panel">
+        ${slide._shared ? '<div class="closing-shared-tag">共通</div>' : ''}
+        <div class="closing-eyebrow">${esc(slide.eyebrow || '')}</div>
+        <h2 class="closing-title-big">${nl2br(esc(slide.title || ''))}</h2>
+        <div class="closing-statement">御社の体制やご要望を伺いながら、施設・用途に合わせた最適プランを具体化させていただきます。</div>
+      </div>
+      <div class="closing-cards">
+        ${bullets.map((b, i) => `
+          <div class="closing-card">
+            <div class="closing-card-num">${String(i + 1).padStart(2, '0')}</div>
+            <div class="closing-card-h">${esc(b.h)}</div>
+            <div class="closing-card-d">${esc(b.d)}</div>
+          </div>
+        `).join('')}
       </div>
     `;
   }
@@ -769,7 +957,11 @@ function renderSlide(container, slide, opts = {}) {
   else if (kind === 'rebuttal') {
     const tagLabels = ['CASE 01', 'CASE 02', 'CASE 03'];
     inner.innerHTML = `
-      ${headerHTML(slide)}
+      <div class="rebuttal-header-panel">
+        ${slide._shared ? '<div class="rebuttal-shared-tag">共通</div>' : ''}
+        <div class="rebuttal-eyebrow">${esc(slide.eyebrow || '')}</div>
+        <h2 class="rebuttal-title-big">${nl2br(esc(slide.title || ''))}</h2>
+      </div>
       <div class="rebuttal-grid">
         ${(slide.cases || []).map((c, i) => `
           <div class="rebuttal-card">

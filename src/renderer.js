@@ -1,5 +1,5 @@
 /* ==========================================================
-   Reegle Giraffe Sales Presentation - Renderer v2
+   Reegle Giraffe Sales Presentation - Renderer v3
    ========================================================== */
 
 const TYPE_META = {
@@ -15,10 +15,22 @@ const SECTION_LABELS = {
   qa: '想定Q&A', closing: 'クロージング', next: '次回日程', rebuttal: '切り返し',
 };
 
+// Map sections to images for richer side-panel usage
+const SECTION_IMG = {
+  intro: 'parts',
+  icebreak: 'parts',
+  hearing: 'detail_kids',
+};
+
 function resolveImage(ref) {
   if (!ref || !ref.startsWith('img:')) return null;
   const key = ref.slice(4);
   return (typeof IMAGES !== 'undefined' && IMAGES[key]) || null;
+}
+
+function imgFor(section) {
+  if (!SECTION_IMG[section]) return null;
+  return resolveImage('img:' + SECTION_IMG[section]);
 }
 
 function renderSlide(container, slide, opts = {}) {
@@ -54,32 +66,53 @@ function renderSlide(container, slide, opts = {}) {
     `;
   }
   else if (kind === 'intro') {
+    const img = imgFor('intro');
     const bullets = slide.bullets || [];
     inner.innerHTML = `
-      ${headerHTML(slide)}
-      <div class="intro-grid">
-        <div class="intro-quote">${nl2br(esc(slide.subtitle || ''))}<br><br>${esc(bullets[0]?.d || '')}</div>
-        <div class="intro-details">
-          ${bullets.map(b => `
-            <div class="intro-detail">
-              <div class="intro-detail-label">${esc(b.h)}</div>
-              <div class="intro-detail-body">${esc(b.d)}</div>
-            </div>
-          `).join('')}
+      <div class="intro-shell">
+        <div class="intro-img">
+          ${img ? `<img src="${img}" alt="">` : ''}
+          <div class="intro-img-eyebrow">${esc(slide.eyebrow || '')}</div>
+        </div>
+        <div class="intro-content">
+          ${slide._shared ? '<div class="intro-shared-tag">共通</div>' : ''}
+          <h2 class="slide-title">${nl2br(esc(slide.title || ''))}</h2>
+          <div class="intro-details">
+            ${bullets.map(b => `
+              <div class="intro-detail">
+                <div class="intro-detail-label">${esc(b.h)}</div>
+                <div class="intro-detail-body">${esc(b.d)}</div>
+              </div>
+            `).join('')}
+          </div>
         </div>
       </div>
     `;
   }
   else if (kind === 'questions') {
+    // Use parts image for icebreak, detail_kids for hearing
+    const section = slide._section;
+    const img = imgFor(section) || resolveImage('img:parts');
+    const bigNum = section === 'hearing' ? '02' : '01';
     inner.innerHTML = `
-      ${headerHTML(slide)}
-      <div class="questions-editorial">
-        ${(slide.questions || []).map((q, i) => `
-          <div class="question-item">
-            <span class="question-mark">${String(i + 1).padStart(2, '0')}.</span>
-            <span class="question-text">${esc(q)}</span>
+      <div class="questions-shell">
+        <div class="questions-img">
+          ${img ? `<img src="${img}" alt="">` : ''}
+          <div class="questions-img-eyebrow">${esc(slide.eyebrow || '')}</div>
+          <div class="questions-img-bignum">${bigNum}</div>
+        </div>
+        <div class="questions-content">
+          ${slide._shared ? '<div class="questions-shared-tag">共通</div>' : ''}
+          <h2 class="slide-title">${nl2br(esc(slide.title || ''))}</h2>
+          <div class="questions-editorial">
+            ${(slide.questions || []).map((q, i) => `
+              <div class="question-item">
+                <span class="question-mark">${String(i + 1).padStart(2, '0')}.</span>
+                <span class="question-text">${esc(q)}</span>
+              </div>
+            `).join('')}
           </div>
-        `).join('')}
+        </div>
       </div>
     `;
   }
@@ -103,18 +136,26 @@ function renderSlide(container, slide, opts = {}) {
     `;
   }
   else if (kind === 'position') {
+    const img = resolveImage('img:hero_usage') || resolveImage('img:usage_scene');
     inner.innerHTML = `
-      ${headerHTML(slide)}
-      <div class="position-grid">
-        ${(slide.bullets || []).map((b, i) => `
-          <div class="position-card">
-            <div class="position-num">${String(i + 1).padStart(2, '0')}</div>
-            <div class="position-body">
-              <div class="position-h">${esc(b.h)}</div>
-              ${b.d ? `<div class="position-d">${esc(b.d)}</div>` : ''}
-            </div>
+      <div class="position-shell">
+        <div class="position-content">
+          ${slide._shared ? '<div class="position-shared-tag">共通</div>' : ''}
+          <div class="slide-header"><div class="slide-eyebrow">${esc(slide.eyebrow || '')}</div></div>
+          <h2 class="slide-title">${nl2br(esc(slide.title || ''))}</h2>
+          <div class="position-grid">
+            ${(slide.bullets || []).map((b, i) => `
+              <div class="position-card">
+                <div class="position-num">${String(i + 1).padStart(2, '0')}</div>
+                <div class="position-body">
+                  <div class="position-h">${esc(b.h)}</div>
+                  ${b.d ? `<div class="position-d">${esc(b.d)}</div>` : ''}
+                </div>
+              </div>
+            `).join('')}
           </div>
-        `).join('')}
+        </div>
+        <div class="position-img">${img ? `<img src="${img}" alt="">` : ''}</div>
       </div>
     `;
   }
@@ -186,18 +227,20 @@ function renderSlide(container, slide, opts = {}) {
   else if (kind === 'closing') {
     const bullets = slide.bullets || [];
     inner.innerHTML = `
-      ${headerHTML(slide)}
-      <div class="closing-grid">
-        <div class="closing-statement">${esc('御社の体制やご要望を伺いながら、施設・用途に合わせた最適プランを具体化させていただきます。')}</div>
-        <div class="closing-cards">
-          ${bullets.map((b, i) => `
-            <div class="closing-card">
-              <div class="closing-card-num">${String(i + 1).padStart(2, '0')}</div>
-              <div class="closing-card-h">${esc(b.h)}</div>
-              <div class="closing-card-d">${esc(b.d)}</div>
-            </div>
-          `).join('')}
-        </div>
+      <div class="closing-statement-panel">
+        ${slide._shared ? '<div class="closing-shared-tag">共通</div>' : ''}
+        <div class="closing-eyebrow">${esc(slide.eyebrow || '')}</div>
+        <h2 class="closing-title-big">${nl2br(esc(slide.title || ''))}</h2>
+        <div class="closing-statement">御社の体制やご要望を伺いながら、施設・用途に合わせた最適プランを具体化させていただきます。</div>
+      </div>
+      <div class="closing-cards">
+        ${bullets.map((b, i) => `
+          <div class="closing-card">
+            <div class="closing-card-num">${String(i + 1).padStart(2, '0')}</div>
+            <div class="closing-card-h">${esc(b.h)}</div>
+            <div class="closing-card-d">${esc(b.d)}</div>
+          </div>
+        `).join('')}
       </div>
     `;
   }
@@ -210,7 +253,11 @@ function renderSlide(container, slide, opts = {}) {
   else if (kind === 'rebuttal') {
     const tagLabels = ['CASE 01', 'CASE 02', 'CASE 03'];
     inner.innerHTML = `
-      ${headerHTML(slide)}
+      <div class="rebuttal-header-panel">
+        ${slide._shared ? '<div class="rebuttal-shared-tag">共通</div>' : ''}
+        <div class="rebuttal-eyebrow">${esc(slide.eyebrow || '')}</div>
+        <h2 class="rebuttal-title-big">${nl2br(esc(slide.title || ''))}</h2>
+      </div>
       <div class="rebuttal-grid">
         ${(slide.cases || []).map((c, i) => `
           <div class="rebuttal-card">
