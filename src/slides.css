@@ -1,0 +1,179 @@
+/* ==========================================================
+   Reegle Giraffe Sales Presentation - Styles
+   Design tokens: matches existing Reegle deck (greens / BIZ UDPGothic)
+   ========================================================== */
+
+:root {
+  --green-dk: #1E5530;
+  --green: #2A6E3A;
+  --green-lt: #EAF3EC;
+  --ink: #333333;
+  --sub: #5F6B62;
+  --box: #F5F7FA;
+  --line: #E2E6E9;
+  --white: #FFFFFF;
+  --font-jp: 'BIZ UDPGothic', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI', 'Meiryo', sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: var(--font-jp); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+/* ----- Slide canvas: 16:9, scales to fit container ----- */
+.slide {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--white);
+  overflow: hidden;
+  container-type: inline-size;
+}
+.slide-inner {
+  position: absolute; inset: 0;
+  padding: 3.5cqw 4cqw 5cqw 4cqw;
+  display: flex; flex-direction: column;
+}
+
+/* ----- Slide header (eyebrow + rule + title) ----- */
+.slide-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 1.4cqw; color: var(--green-dk); font-weight: bold;
+}
+.shared-tag {
+  font-size: 1cqw; color: var(--sub); font-weight: normal;
+  border: 1px solid var(--line); padding: 0.2cqw 0.6cqw; border-radius: 0.3cqw;
+}
+.slide-rule { height: 0; border-top: 0.15cqw solid var(--green-dk); margin: 0.6cqw 0 1.0cqw; }
+.slide-title { font-size: 2.6cqw; font-weight: bold; color: var(--green-dk); margin: 0 0 1.5cqw; line-height: 1.3; }
+.slide-eyebrow { font-size: 1.4cqw; color: var(--green-dk); font-weight: bold; }
+
+/* ----- Slide footer ----- */
+.slide-footer {
+  position: absolute; bottom: 1.2cqw; left: 4cqw; right: 4cqw;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 1.1cqw; color: var(--sub);
+  padding-top: 0.6cqw; border-top: 0.08cqw solid var(--line);
+}
+
+/* ============================================================
+   Slide kinds
+   ============================================================ */
+
+/* ----- Cover ----- */
+.slide-cover .slide-inner { padding: 0; }
+.cover-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--green-dk) 0%, var(--green) 60%, #3a8848 100%);
+}
+.cover-bg::before {
+  content: ""; position: absolute; right: -10%; bottom: -10%; width: 70%; height: 70%;
+  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+}
+.cover-content {
+  position: relative; z-index: 1; padding: 6cqw 6cqw;
+  height: 100%; display: flex; flex-direction: column; justify-content: center;
+  color: var(--white);
+}
+.cover-eyebrow { font-size: 1.6cqw; opacity: 0.85; margin-bottom: 1cqw; letter-spacing: 0.05em; }
+.cover-title { font-size: 4.2cqw; font-weight: bold; line-height: 1.35; margin: 0 0 2cqw; }
+.cover-subtitle { font-size: 1.8cqw; opacity: 0.9; margin-bottom: auto; }
+.cover-company { font-size: 1.4cqw; opacity: 0.75; }
+
+/* ----- Bullets layout (intro / position / basic / closing) ----- */
+.bullets { display: flex; flex-direction: column; gap: 1.2cqw; flex: 1; }
+.bullet-card {
+  background: var(--box); border-radius: 0.5cqw; padding: 1.4cqw 1.8cqw;
+  border-left: 0.4cqw solid var(--green-dk);
+}
+.bullet-h { font-size: 1.7cqw; font-weight: bold; color: var(--green-dk); margin-bottom: 0.3cqw; }
+.bullet-d { font-size: 1.4cqw; color: var(--ink); line-height: 1.5; }
+
+/* ----- Overview (image + structured text) ----- */
+.overview-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 2cqw; flex: 1; align-items: start; }
+.overview-img { background: var(--box); border-radius: 0.5cqw; overflow: hidden; aspect-ratio: 4/3; }
+.overview-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.overview-text { display: flex; flex-direction: column; gap: 0.8cqw; }
+.overview-sub { font-size: 1.5cqw; color: var(--green); font-weight: bold; margin-bottom: 0.4cqw; }
+.bullet-row {
+  padding: 0.8cqw 1.2cqw; background: var(--green-lt); border-radius: 0.4cqw;
+}
+.bullet-row-h { font-size: 1.4cqw; font-weight: bold; color: var(--green-dk); }
+.bullet-row-d { font-size: 1.2cqw; color: var(--ink); margin-top: 0.2cqw; }
+.overview-foot { font-size: 1.1cqw; color: var(--sub); margin-top: 0.4cqw; }
+
+/* ----- USP merits ----- */
+.merits { display: flex; flex-direction: column; gap: 1cqw; flex: 1; }
+.merit-card {
+  display: flex; align-items: center; gap: 1.5cqw;
+  background: var(--box); border-radius: 0.5cqw; padding: 1.3cqw 1.8cqw;
+}
+.merit-num {
+  width: 3.2cqw; height: 3.2cqw; border-radius: 50%; background: var(--green-dk);
+  color: var(--white); font-size: 1.6cqw; font-weight: bold;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.merit-body { flex: 1; }
+.merit-h { font-size: 1.7cqw; font-weight: bold; color: var(--green-dk); margin-bottom: 0.2cqw; }
+.merit-d { font-size: 1.4cqw; color: var(--ink); }
+.merit-bar {
+  margin-top: 1cqw; padding: 1.1cqw 2cqw; background: var(--green-dk);
+  color: var(--white); border-radius: 0.4cqw; text-align: center;
+  font-size: 1.6cqw; font-weight: bold;
+}
+
+/* ----- Questions ----- */
+.questions { display: flex; flex-direction: column; gap: 0.9cqw; flex: 1; }
+.question-item {
+  display: flex; gap: 1.2cqw; align-items: start;
+  padding: 1.1cqw 1.5cqw; background: var(--box); border-radius: 0.4cqw;
+  border-left: 0.4cqw solid var(--green);
+}
+.question-mark {
+  font-size: 1.3cqw; font-weight: bold; color: var(--green-dk);
+  background: var(--green-lt); padding: 0.2cqw 0.7cqw; border-radius: 0.3cqw;
+  flex-shrink: 0;
+}
+.question-text { font-size: 1.5cqw; color: var(--ink); line-height: 1.4; padding-top: 0.2cqw; }
+
+/* ----- Achievement ----- */
+.achievement-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 2cqw; flex: 1; align-items: start; }
+.achievement-img { background: var(--box); border-radius: 0.5cqw; overflow: hidden; aspect-ratio: 4/3; }
+.achievement-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.achievement-text { display: flex; flex-direction: column; gap: 1cqw; }
+.ach-row {
+  padding: 1cqw 1.4cqw; background: var(--green-lt); border-radius: 0.4cqw;
+  border-left: 0.4cqw solid var(--green-dk);
+}
+.ach-h { font-size: 1.5cqw; font-weight: bold; color: var(--green-dk); }
+.ach-d { font-size: 1.2cqw; color: var(--ink); margin-top: 0.2cqw; }
+.ach-foot { font-size: 1.1cqw; color: var(--sub); margin-top: 0.4cqw; }
+
+/* ----- Q&A grid ----- */
+.qa-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.8cqw; flex: 1;
+  align-content: start;
+}
+.qa-card {
+  background: var(--box); border-radius: 0.4cqw; padding: 0.9cqw 1.2cqw;
+  border-left: 0.3cqw solid var(--green);
+}
+.qa-q { font-size: 1.15cqw; font-weight: bold; color: var(--green-dk); margin-bottom: 0.25cqw; line-height: 1.35; }
+.qa-a { font-size: 1.05cqw; color: var(--ink); line-height: 1.4; }
+
+/* ----- Simple ----- */
+.simple-body {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 2cqw; color: var(--green-dk); text-align: center;
+  background: var(--green-lt); border-radius: 0.5cqw; padding: 2cqw;
+}
+
+/* ----- Rebuttal ----- */
+.rebuttal-grid { display: flex; flex-direction: column; gap: 1.2cqw; flex: 1; }
+.rebuttal-card {
+  padding: 1.4cqw 1.8cqw; background: var(--box); border-radius: 0.5cqw;
+  border-left: 0.4cqw solid var(--green-dk);
+}
+.rebuttal-h { font-size: 1.6cqw; font-weight: bold; color: var(--green-dk); margin-bottom: 0.5cqw; }
+.rebuttal-d { font-size: 1.35cqw; color: var(--ink); line-height: 1.5; }
+
+/* ----- Empty/error ----- */
+.slide-empty { padding: 8cqw; color: var(--sub); text-align: center; font-size: 2cqw; }

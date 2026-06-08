@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>進行用｜Reegle ジラフユニット 商談</title>
+<style>__INLINE_CSS__</style>
+<style>
+/* Presenter-specific layout */
+html, body { height: 100%; background: #f6f7f8; overflow: hidden; }
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+}
+
+/* Top bar: type switcher + global controls */
+.topbar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 20px; background: var(--white);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-jp);
+}
+.brand { font-weight: bold; color: var(--green-dk); font-size: 15px; margin-right: 12px; }
+.type-switcher { display: flex; gap: 6px; }
+.type-btn {
+  padding: 7px 14px; font-size: 13px; font-family: var(--font-jp);
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--white); color: var(--ink); cursor: pointer;
+  transition: all 0.15s;
+}
+.type-btn:hover { background: var(--green-lt); }
+.type-btn.active {
+  background: var(--green-dk); color: var(--white); border-color: var(--green-dk); font-weight: bold;
+}
+.spacer { flex: 1; }
+.sync-status {
+  font-size: 12px; padding: 4px 10px; border-radius: 4px;
+  background: #f0f0f0; color: var(--sub);
+}
+.sync-status.live { background: #e8f5e9; color: #1b5e20; }
+.btn-projector {
+  padding: 8px 14px; font-size: 13px; font-family: var(--font-jp);
+  background: var(--green-dk); color: var(--white);
+  border: none; border-radius: 6px; cursor: pointer; font-weight: bold;
+}
+.btn-projector:hover { background: var(--green); }
+
+/* Main two-pane layout */
+.main {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 16px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+/* Left: script list */
+.script-pane {
+  background: var(--white); border-radius: 8px; border: 1px solid var(--line);
+  overflow-y: auto; padding: 12px;
+}
+.script-block {
+  padding: 12px 14px; margin-bottom: 8px; border-radius: 6px;
+  border: 1px solid transparent; cursor: pointer;
+  transition: all 0.15s;
+}
+.script-block:hover { background: var(--green-lt); }
+.script-block.active {
+  background: #fff8e1; border-color: #f9c948; box-shadow: 0 0 0 2px rgba(249,201,72,0.2);
+}
+.script-section-tag {
+  display: inline-block; padding: 2px 8px; font-size: 11px; font-weight: bold;
+  background: var(--green-lt); color: var(--green-dk); border-radius: 3px;
+  margin-right: 8px;
+}
+.script-shared-tag {
+  display: inline-block; padding: 2px 6px; font-size: 10px;
+  background: #f0f0f0; color: var(--sub); border-radius: 3px;
+}
+.script-num { font-size: 11px; color: var(--sub); margin-right: 6px; }
+.script-title { display: inline; font-size: 13px; font-weight: bold; color: var(--ink); }
+.script-body {
+  margin-top: 8px; font-size: 13px; line-height: 1.65; color: var(--ink);
+  white-space: pre-wrap;
+}
+.script-body p { margin: 0 0 0.5em; }
+.script-body strong { color: var(--green-dk); }
+.script-body h3, .script-body .sub-h {
+  font-size: 12px; font-weight: bold; color: var(--green-dk);
+  margin: 0.8em 0 0.3em; border-left: 2px solid var(--green); padding-left: 6px;
+}
+
+/* Right: slide preview + controls */
+.preview-pane { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.preview-meta {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 12px; color: var(--sub);
+}
+.preview-meta .meta-strong { color: var(--ink); font-weight: bold; }
+.preview-wrap {
+  background: var(--white); border-radius: 8px; border: 1px solid var(--line);
+  padding: 10px; flex: 1; display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.preview-slide { width: 100%; max-width: 100%; max-height: 100%; aspect-ratio: 16/9; }
+.preview-slide .slide { width: 100%; height: 100%; aspect-ratio: auto; }
+
+/* Nav controls */
+.nav-controls { display: flex; gap: 8px; align-items: center; }
+.nav-btn {
+  padding: 6px 12px; font-size: 12px; font-family: var(--font-jp);
+  background: var(--white); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 5px; cursor: pointer;
+}
+.nav-btn:hover { background: var(--green-lt); border-color: var(--green); }
+.nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.nav-counter { font-size: 12px; color: var(--sub); padding: 0 6px; }
+
+/* Keyboard hint */
+.kb-hint { font-size: 11px; color: var(--sub); opacity: 0.7; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand">Reegle ジラフユニット 商談</div>
+    <div class="type-switcher" id="typeSwitcher"></div>
+    <div class="spacer"></div>
+    <div class="kb-hint">← → でスライド送り</div>
+    <div class="sync-status" id="syncStatus">投影画面：未接続</div>
+    <button class="btn-projector" id="btnProjector">🖥 投影画面を別タブで開く</button>
+  </div>
+
+  <div class="main">
+
+    <div class="script-pane" id="scriptPane"></div>
+
+    <div class="preview-pane">
+      <div class="preview-meta">
+        <span id="metaSection" class="meta-strong"></span>
+        <span id="metaPage"></span>
+        <div style="flex:1"></div>
+        <div class="nav-controls">
+          <button class="nav-btn" id="btnPrev">← 前へ</button>
+          <span class="nav-counter" id="navCounter"></span>
+          <button class="nav-btn" id="btnNext">次へ →</button>
+        </div>
+      </div>
+      <div class="preview-wrap"><div class="preview-slide" id="previewSlide"></div></div>
+    </div>
+
+  </div>
+</div>
+
+<script>const IMAGES = __INLINE_IMAGES__;</script>
+<script>const SLIDES_DATA = __INLINE_SLIDES__;</script>
+<script>const SCRIPTS_DATA = __INLINE_SCRIPTS__;</script>
+<script>__INLINE_RENDERER__</script>
+
+<script>
+// ===== Presenter state =====
+const state = {
+  type: 'municipal',
+  index: 0,
+};
+
+// ===== BroadcastChannel setup =====
+let bc = null;
+let audienceConnected = false;
+try {
+  bc = new BroadcastChannel('reegle-present');
+  bc.onmessage = ev => {
+    if (!ev.data) return;
+    if (ev.data.kind === 'hello') {
+      // Audience tab announced itself — respond with current state and mark connected
+      audienceConnected = true;
+      updateSyncStatus();
+      sendState('hello-back');
+    } else if (ev.data.kind === 'nav') {
+      navigate(ev.data.dir);
+    }
+  };
+} catch {}
+
+function sendState(kind = 'state') {
+  if (!bc) return;
+  bc.postMessage({ kind, state: { type: state.type, index: state.index } });
+}
+function updateSyncStatus() {
+  const el = document.getElementById('syncStatus');
+  if (audienceConnected) {
+    el.textContent = '投影画面：接続中';
+    el.classList.add('live');
+  } else {
+    el.textContent = '投影画面：未接続';
+    el.classList.remove('live');
+  }
+}
+
+// ===== Type switcher =====
+function renderTypeSwitcher() {
+  const host = document.getElementById('typeSwitcher');
+  host.innerHTML = '';
+  Object.keys(TYPE_META).forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'type-btn' + (t === state.type ? ' active' : '');
+    btn.textContent = TYPE_META[t].label;
+    btn.onclick = () => switchType(t);
+    host.appendChild(btn);
+  });
+}
+function switchType(t) {
+  state.type = t;
+  state.index = 0;
+  renderTypeSwitcher();
+  renderScriptList();
+  paintPreview();
+  scrollActiveIntoView();
+  sendState();
+}
+
+// ===== Script formatting =====
+function formatScript(raw) {
+  if (!raw) return '';
+  // Convert markdown-ish patterns to HTML
+  // 1. Sub-headings (## **Q1：...**)
+  let s = raw.replace(/^##\s*\*\*(.+?)\*\*\s*$/gm, '<div class="sub-h">$1</div>');
+  // 2. Bold (**xxx**)
+  s = s.replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>');
+  // 3. Bullet lines starting with "- "
+  s = s.replace(/^- (.+)$/gm, '・$1');
+  // 4. Paragraphs (split by blank line)
+  const paragraphs = s.split(/\n\n+/).map(p => {
+    if (p.includes('class="sub-h"')) return p;
+    return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+  });
+  return paragraphs.join('');
+}
+
+// ===== Script list =====
+function renderScriptList() {
+  const pane = document.getElementById('scriptPane');
+  pane.innerHTML = '';
+  const slides = SLIDES_DATA[state.type] || [];
+  const scripts = SCRIPTS_DATA[state.type] || {};
+  slides.forEach((slide, i) => {
+    const block = document.createElement('div');
+    block.className = 'script-block' + (i === state.index ? ' active' : '');
+    block.dataset.idx = i;
+    const sec = slide._section;
+    const sectionLabel = SECTION_LABELS[sec] || sec;
+    const scriptText = scripts[sec] || '';
+    const shared = slide._shared ? '<span class="script-shared-tag">共通</span>' : '';
+    const header = `
+      <div>
+        <span class="script-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="script-section-tag">${escHtml(sectionLabel)}</span>
+        ${shared}
+      </div>
+    `;
+    const body = scriptText ? `<div class="script-body">${formatScript(scriptText)}</div>` : '';
+    block.innerHTML = header + body;
+    block.onclick = () => { state.index = i; paintPreview(); scrollActiveIntoView(); sendState(); markActive(); };
+    pane.appendChild(block);
+  });
+}
+function markActive() {
+  document.querySelectorAll('.script-block').forEach((b, i) => {
+    b.classList.toggle('active', i === state.index);
+  });
+}
+function scrollActiveIntoView() {
+  const active = document.querySelector('.script-block.active');
+  if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===== Preview =====
+function paintPreview() {
+  const slides = SLIDES_DATA[state.type] || [];
+  const slide = slides[state.index];
+  const host = document.getElementById('previewSlide');
+  const nonCoverIdx = slides.slice(0, state.index + 1).filter(s => s.kind !== 'cover').length;
+  const nonCoverTotal = slides.filter(s => s.kind !== 'cover').length;
+  const typeLabel = TYPE_META[state.type] ? TYPE_META[state.type].label : '';
+  const pageInfo = slide && slide.kind !== 'cover' ? `${nonCoverIdx} / ${nonCoverTotal}` : '';
+  renderSlide(host, slide, { typeLabel, pageInfo });
+  // Meta info
+  document.getElementById('metaSection').textContent = SECTION_LABELS[slide._section] || '';
+  document.getElementById('metaPage').textContent = `${state.index + 1} / ${slides.length}`;
+  document.getElementById('navCounter').textContent = `${state.index + 1} / ${slides.length}`;
+  document.getElementById('btnPrev').disabled = state.index === 0;
+  document.getElementById('btnNext').disabled = state.index === slides.length - 1;
+}
+
+// ===== Navigation =====
+function navigate(dir) {
+  const slides = SLIDES_DATA[state.type] || [];
+  const next = state.index + dir;
+  if (next < 0 || next >= slides.length) return;
+  state.index = next;
+  paintPreview();
+  scrollActiveIntoView();
+  markActive();
+  sendState();
+}
+
+// ===== Wiring =====
+document.getElementById('btnPrev').onclick = () => navigate(-1);
+document.getElementById('btnNext').onclick = () => navigate(1);
+document.getElementById('btnProjector').onclick = () => {
+  // Open audience view in a new tab; user then shares THAT tab in Zoom
+  const win = window.open('index.html', 'reegle-audience');
+  if (!win) {
+    alert('ポップアップがブロックされました。ブラウザの設定で許可してください。');
+    return;
+  }
+  // Optimistic: mark as soon-to-connect
+  setTimeout(() => { sendState(); }, 700);
+};
+window.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowRight') { navigate(1); e.preventDefault(); }
+  else if (e.key === 'ArrowLeft') { navigate(-1); e.preventDefault(); }
+});
+
+function escHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// ===== Init =====
+renderTypeSwitcher();
+renderScriptList();
+paintPreview();
+updateSyncStatus();
+</script>
+</body>
+</html>

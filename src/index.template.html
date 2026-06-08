@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Reegle ジラフユニット 商談スライド</title>
+<style>__INLINE_CSS__</style>
+<style>
+/* Audience-specific layout: single slide filling the viewport */
+html, body { width: 100%; height: 100%; background: #fafafa; overflow: hidden; }
+.viewport {
+  width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: #fafafa;
+}
+.audience-slide {
+  width: min(100vw, calc(100vh * 16 / 9));
+  height: min(100vh, calc(100vw * 9 / 16));
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+  background: var(--white);
+}
+.audience-slide .slide { width: 100%; height: 100%; aspect-ratio: auto; }
+.shared-tag { display: none !important; } /* hide the 共通 tag for audience */
+.audience-slide .slide .slide-footer .footer-left {
+  /* show only "Reegle株式会社", strip the type label */
+}
+.audience-slide .slide .slide-footer .footer-right { display: none; }
+/* No-data indicator */
+.wait {
+  font-size: 1.2rem; color: var(--sub); padding: 2rem; text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="viewport">
+  <div id="slideHost" class="audience-slide">
+    <div class="slide"><div class="slide-inner"><div class="wait">商談ビューからの操作を待っています...<br><small style="opacity:0.6">（進行用画面の「投影画面を別タブで開く」ボタンから開いてください）</small></div></div></div>
+  </div>
+</div>
+
+<script>const IMAGES = __INLINE_IMAGES__;</script>
+<script>const SLIDES_DATA = __INLINE_SLIDES__;</script>
+<script>__INLINE_RENDERER__</script>
+<script>
+// Audience: state is driven by BroadcastChannel from presenter
+let state = { type: 'municipal', index: 0 };
+const host = document.getElementById('slideHost');
+
+function paint() {
+  const slides = SLIDES_DATA[state.type] || [];
+  const slide = slides[state.index];
+  const slideEl = document.createElement('div');
+  slideEl.style.width = '100%';
+  slideEl.style.height = '100%';
+  host.innerHTML = '';
+  host.appendChild(slideEl);
+  // Compute display index across non-cover slides for footer label
+  const nonCoverIdx = slides.slice(0, state.index + 1).filter(s => s.kind !== 'cover').length;
+  const nonCoverTotal = slides.filter(s => s.kind !== 'cover').length;
+  const typeLabel = '';  // audience view: hide type label for politeness
+  const pageInfo = slide && slide.kind !== 'cover' ? `${nonCoverIdx} / ${nonCoverTotal}` : '';
+  renderSlide(slideEl, slide, { typeLabel, pageInfo });
+}
+
+// Sync via BroadcastChannel
+try {
+  const bc = new BroadcastChannel('reegle-present');
+  bc.onmessage = ev => {
+    if (ev.data && ev.data.kind === 'state') {
+      state = ev.data.state;
+      paint();
+    } else if (ev.data && ev.data.kind === 'hello-back') {
+      // Presenter responded with current state
+      state = ev.data.state;
+      paint();
+    }
+  };
+  // Announce ourselves so the presenter sends current state
+  bc.postMessage({ kind: 'hello' });
+} catch (e) {
+  document.querySelector('.wait').textContent = 'お使いのブラウザは同期機能（BroadcastChannel）に対応していません';
+}
+
+// Allow keyboard nav also from audience view (optional)
+window.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    try {
+      const bc = new BroadcastChannel('reegle-present');
+      bc.postMessage({ kind: 'nav', dir: e.key === 'ArrowRight' ? 1 : -1 });
+    } catch {}
+  }
+});
+</script>
+</body>
+</html>
