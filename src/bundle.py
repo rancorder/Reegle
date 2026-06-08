@@ -18,6 +18,9 @@ images = {
     'unit_pair': inline_image(f'{ROOT}/unit_pair.webp'),
     'usage_scene': inline_image(f'{ROOT}/usage_scene.webp'),
     'parts': inline_image(f'{ROOT}/parts.webp'),
+    'hero_unit': inline_image(f'{ROOT}/hero_unit.webp'),
+    'hero_usage': inline_image(f'{ROOT}/hero_usage.webp'),
+    'detail_kids': inline_image(f'{ROOT}/detail_kids.webp'),
 }
 
 def bundle(template_path, output_path, include_scripts):

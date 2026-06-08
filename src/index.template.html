@@ -57,7 +57,8 @@ function paint() {
   const nonCoverTotal = slides.filter(s => s.kind !== 'cover').length;
   const typeLabel = '';  // audience view: hide type label for politeness
   const pageInfo = slide && slide.kind !== 'cover' ? `${nonCoverIdx} / ${nonCoverTotal}` : '';
-  renderSlide(slideEl, slide, { typeLabel, pageInfo });
+  const coverEyebrow = TYPE_META[state.type] ? TYPE_META[state.type].coverEyebrow : '';
+  renderSlide(slideEl, slide, { typeLabel, pageInfo, coverEyebrow });
 }
 
 // Sync via BroadcastChannel

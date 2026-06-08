@@ -1,41 +1,26 @@
 /* ==========================================================
-   Reegle Giraffe Sales Presentation - Renderer
-   Used by both index.html (audience) and present.html (presenter)
+   Reegle Giraffe Sales Presentation - Renderer v2
    ========================================================== */
 
-// SLIDES_DATA, SCRIPTS_DATA, IMAGES will be defined by the host HTML before this script loads.
-
-// ----- Type metadata -----
 const TYPE_META = {
-  municipal: { label: '自治体向け', color: '#1E5530' },
-  kindergarten: { label: '幼稚園向け', color: '#2A6E3A' },
-  studio: { label: '写真スタジオ向け', color: '#1E5530' },
+  municipal: { label: '自治体向け', color: '#1A4A2A', coverEyebrow: 'FOR LOCAL GOVERNMENT' },
+  kindergarten: { label: '幼稚園向け', color: '#2A6E3A', coverEyebrow: 'FOR KINDERGARTEN' },
+  studio: { label: '写真スタジオ向け', color: '#1A4A2A', coverEyebrow: 'FOR PHOTO STUDIO' },
 };
 
 const SECTION_LABELS = {
-  cover: '表紙',
-  intro: '会社紹介',
-  icebreak: 'アイスブレイク',
-  overview: 'サービス概要',
-  position: '関心・ポジショニング',
-  usp: '3つのメリット',
-  basic: '基本サービス',
-  achievement: '実績紹介',
-  hearing: 'ヒアリング',
-  qa: '想定Q&A',
-  closing: 'クロージング',
-  next: '次回日程',
-  rebuttal: '切り返し',
+  cover: '表紙', intro: '会社紹介', icebreak: 'アイスブレイク',
+  overview: 'サービス概要', position: '関心・ポジショニング', usp: '3つのメリット',
+  basic: '基本サービス', achievement: '実績紹介', hearing: 'ヒアリング',
+  qa: '想定Q&A', closing: 'クロージング', next: '次回日程', rebuttal: '切り返し',
 };
 
-// ----- Resolve image references -----
 function resolveImage(ref) {
   if (!ref || !ref.startsWith('img:')) return null;
   const key = ref.slice(4);
   return (typeof IMAGES !== 'undefined' && IMAGES[key]) || null;
 }
 
-// ----- Render a single slide into the given container -----
 function renderSlide(container, slide, opts = {}) {
   if (!slide) {
     container.innerHTML = '<div class="slide-empty">スライドがありません</div>';
@@ -47,33 +32,57 @@ function renderSlide(container, slide, opts = {}) {
   const inner = document.createElement('div');
   inner.className = 'slide-inner';
 
-  // Cover slide
   if (kind === 'cover') {
+    const heroImg = resolveImage('img:hero_unit') || resolveImage('img:unit_pair');
+    const typeEyebrow = (opts.coverEyebrow) || (slide.eyebrow || '').toUpperCase();
     inner.innerHTML = `
-      <div class="cover-bg"></div>
+      <div class="cover-bg" style="background-image:url('${heroImg || ''}')"></div>
       <div class="cover-content">
-        <div class="cover-eyebrow">${esc(slide.eyebrow)}</div>
-        <h1 class="cover-title">${nl2br(esc(slide.title))}</h1>
-        <div class="cover-subtitle">${esc(slide.subtitle || '')}</div>
-        <div class="cover-company">${esc(slide.company || '')}</div>
+        <div class="cover-top">${esc(typeEyebrow)} ／ REEGLE PROPOSAL</div>
+        <div>
+          <h1 class="cover-title">${nl2br(esc(slide.title))}</h1>
+          <div class="cover-subtitle">${esc(slide.subtitle || '')}</div>
+        </div>
+        <div class="cover-bottom">
+          <div>
+            <div class="cover-brand">REEGLE</div>
+            <div class="cover-brand-sub">${esc(slide.company || 'Reegle Co., Ltd.')}</div>
+          </div>
+          <div class="cover-meta">木製ユニット「ジラフユニット」のご提案</div>
+        </div>
       </div>
     `;
   }
-  // Intro / position / basic / closing (bullets layout)
-  else if (kind === 'intro' || kind === 'position' || kind === 'basic' || kind === 'closing') {
+  else if (kind === 'intro') {
+    const bullets = slide.bullets || [];
     inner.innerHTML = `
       ${headerHTML(slide)}
-      <div class="bullets">
-        ${(slide.bullets || []).map(b => `
-          <div class="bullet-card">
-            <div class="bullet-h">${esc(b.h)}</div>
-            ${b.d ? `<div class="bullet-d">${esc(b.d)}</div>` : ''}
+      <div class="intro-grid">
+        <div class="intro-quote">${nl2br(esc(slide.subtitle || ''))}<br><br>${esc(bullets[0]?.d || '')}</div>
+        <div class="intro-details">
+          ${bullets.map(b => `
+            <div class="intro-detail">
+              <div class="intro-detail-label">${esc(b.h)}</div>
+              <div class="intro-detail-body">${esc(b.d)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+  else if (kind === 'questions') {
+    inner.innerHTML = `
+      ${headerHTML(slide)}
+      <div class="questions-editorial">
+        ${(slide.questions || []).map((q, i) => `
+          <div class="question-item">
+            <span class="question-mark">${String(i + 1).padStart(2, '0')}.</span>
+            <span class="question-text">${esc(q)}</span>
           </div>
         `).join('')}
       </div>
     `;
   }
-  // Overview - product image + bullets
   else if (kind === 'overview') {
     const img = resolveImage(slide.image);
     inner.innerHTML = `
@@ -83,60 +92,77 @@ function renderSlide(container, slide, opts = {}) {
         <div class="overview-text">
           <div class="overview-sub">${esc(slide.subtitle || '')}</div>
           ${(slide.bullets || []).map(b => `
-            <div class="bullet-row">
-              <div class="bullet-row-h">${esc(b.h)}</div>
-              <div class="bullet-row-d">${esc(b.d)}</div>
+            <div class="spec-row">
+              <div class="spec-h">${esc(b.h)}</div>
+              <div class="spec-d">${esc(b.d)}</div>
             </div>
           `).join('')}
-          ${slide.footnote ? `<div class="overview-foot">※ ${esc(slide.footnote)}</div>` : ''}
+          ${slide.footnote ? `<div class="overview-foot">— ${esc(slide.footnote)}</div>` : ''}
         </div>
       </div>
     `;
   }
-  // USP - 3 merits + green bar
-  else if (kind === 'usp') {
+  else if (kind === 'position') {
     inner.innerHTML = `
       ${headerHTML(slide)}
-      <div class="merits">
-        ${(slide.merits || []).map(m => `
-          <div class="merit-card">
-            <div class="merit-num">${esc(m.n)}</div>
-            <div class="merit-body">
-              <div class="merit-h">${esc(m.h)}</div>
-              <div class="merit-d">${esc(m.d)}</div>
+      <div class="position-grid">
+        ${(slide.bullets || []).map((b, i) => `
+          <div class="position-card">
+            <div class="position-num">${String(i + 1).padStart(2, '0')}</div>
+            <div class="position-body">
+              <div class="position-h">${esc(b.h)}</div>
+              ${b.d ? `<div class="position-d">${esc(b.d)}</div>` : ''}
             </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+  else if (kind === 'usp') {
+    inner.innerHTML = `
+      <div class="usp-header">${headerHTML(slide)}</div>
+      <div class="usp-merits">
+        ${(slide.merits || []).map(m => `
+          <div class="merit-panel">
+            <div class="merit-num">${esc(m.n)}</div>
+            <div class="merit-h">${esc(m.h)}</div>
+            <div class="merit-d">${esc(m.d)}</div>
           </div>
         `).join('')}
       </div>
       <div class="merit-bar">${esc(slide.bar)}</div>
     `;
   }
-  // Questions (icebreak / hearing)
-  else if (kind === 'questions') {
+  else if (kind === 'basic') {
     inner.innerHTML = `
       ${headerHTML(slide)}
-      <div class="questions">
-        ${(slide.questions || []).map((q, i) => `
-          <div class="question-item">
-            <span class="question-mark">Q${i + 1}</span>
-            <span class="question-text">${esc(q)}</span>
+      <div class="basic-grid">
+        ${(slide.bullets || []).map((b, i) => `
+          <div class="basic-card">
+            <div class="basic-marker">${String(i + 1).padStart(2, '0')}</div>
+            <div>
+              <div class="basic-h">${esc(b.h)}</div>
+              <div class="basic-d">${esc(b.d)}</div>
+            </div>
           </div>
         `).join('')}
       </div>
     `;
   }
-  // Achievement - image + bullets
   else if (kind === 'achievement') {
-    const img = resolveImage(slide.image);
+    const img = resolveImage(slide.image) || resolveImage('img:hero_usage');
     inner.innerHTML = `
       ${headerHTML(slide)}
       <div class="achievement-grid">
         <div class="achievement-img">${img ? `<img src="${img}" alt="">` : ''}</div>
         <div class="achievement-text">
+          <div class="ach-tagline">"Crafted spaces, considered details."</div>
           ${(slide.bullets || []).map(b => `
             <div class="ach-row">
-              <div class="ach-h">${esc(b.h)}</div>
-              ${b.d ? `<div class="ach-d">${esc(b.d)}</div>` : ''}
+              <div>
+                <div class="ach-h">${esc(b.h)}</div>
+                ${b.d ? `<div class="ach-d">${esc(b.d)}</div>` : ''}
+              </div>
             </div>
           `).join('')}
           ${slide.footnote ? `<div class="ach-foot">※ ${esc(slide.footnote)}</div>` : ''}
@@ -144,34 +170,51 @@ function renderSlide(container, slide, opts = {}) {
       </div>
     `;
   }
-  // Q&A grid
   else if (kind === 'qa') {
     inner.innerHTML = `
       ${headerHTML(slide)}
       <div class="qa-grid">
         ${(slide.items || []).map(it => `
           <div class="qa-card">
-            <div class="qa-q">Q. ${esc(it.q)}</div>
-            <div class="qa-a">A. ${esc(it.a)}</div>
+            <div class="qa-q">${esc(it.q)}</div>
+            <div class="qa-a">${esc(it.a)}</div>
           </div>
         `).join('')}
       </div>
     `;
   }
-  // Simple text
+  else if (kind === 'closing') {
+    const bullets = slide.bullets || [];
+    inner.innerHTML = `
+      ${headerHTML(slide)}
+      <div class="closing-grid">
+        <div class="closing-statement">${esc('御社の体制やご要望を伺いながら、施設・用途に合わせた最適プランを具体化させていただきます。')}</div>
+        <div class="closing-cards">
+          ${bullets.map((b, i) => `
+            <div class="closing-card">
+              <div class="closing-card-num">${String(i + 1).padStart(2, '0')}</div>
+              <div class="closing-card-h">${esc(b.h)}</div>
+              <div class="closing-card-d">${esc(b.d)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
   else if (kind === 'simple') {
     inner.innerHTML = `
       ${headerHTML(slide)}
       <div class="simple-body">${esc(slide.body)}</div>
     `;
   }
-  // Rebuttal cases
   else if (kind === 'rebuttal') {
+    const tagLabels = ['CASE 01', 'CASE 02', 'CASE 03'];
     inner.innerHTML = `
       ${headerHTML(slide)}
       <div class="rebuttal-grid">
-        ${(slide.cases || []).map(c => `
+        ${(slide.cases || []).map((c, i) => `
           <div class="rebuttal-card">
+            <div class="rebuttal-tag">${tagLabels[i] || ''}</div>
             <div class="rebuttal-h">${esc(c.h)}</div>
             <div class="rebuttal-d">${esc(c.d)}</div>
           </div>
@@ -180,14 +223,13 @@ function renderSlide(container, slide, opts = {}) {
     `;
   }
 
-  // Footer (except cover)
   if (kind !== 'cover') {
     const footer = document.createElement('div');
     footer.className = 'slide-footer';
     const typeLabel = opts.typeLabel || '';
     const pageInfo = opts.pageInfo || '';
     footer.innerHTML = `
-      <div class="footer-left">Reegle株式会社${typeLabel ? ' ／ ' + esc(typeLabel) : ''}</div>
+      <div class="footer-left">REEGLE ${typeLabel ? '／ ' + esc(typeLabel) : ''}</div>
       <div class="footer-right">${esc(pageInfo)}</div>
     `;
     inner.appendChild(footer);
@@ -196,7 +238,6 @@ function renderSlide(container, slide, opts = {}) {
   container.appendChild(inner);
 }
 
-// ----- Helpers -----
 function headerHTML(slide) {
   return `
     <div class="slide-header">

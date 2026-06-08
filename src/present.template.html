@@ -283,8 +283,9 @@ function paintPreview() {
   const nonCoverIdx = slides.slice(0, state.index + 1).filter(s => s.kind !== 'cover').length;
   const nonCoverTotal = slides.filter(s => s.kind !== 'cover').length;
   const typeLabel = TYPE_META[state.type] ? TYPE_META[state.type].label : '';
+  const coverEyebrow = TYPE_META[state.type] ? TYPE_META[state.type].coverEyebrow : '';
   const pageInfo = slide && slide.kind !== 'cover' ? `${nonCoverIdx} / ${nonCoverTotal}` : '';
-  renderSlide(host, slide, { typeLabel, pageInfo });
+  renderSlide(host, slide, { typeLabel, pageInfo, coverEyebrow });
   // Meta info
   document.getElementById('metaSection').textContent = SECTION_LABELS[slide._section] || '';
   document.getElementById('metaPage').textContent = `${state.index + 1} / ${slides.length}`;
