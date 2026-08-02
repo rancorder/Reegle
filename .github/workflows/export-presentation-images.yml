@@ -1,0 +1,44 @@
+name: Export presentation images
+
+on:
+  push:
+    branches:
+      - agent/export-presentation-images-20260802
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verify image sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            src/unit_pair.webp
+            src/usage_scene.webp
+            src/parts.webp
+            src/hero_unit.webp
+            src/hero_usage.webp
+            src/detail_kids.webp
+          )
+          sha256sum "${files[@]}" | tee presentation-images.sha256
+          file "${files[@]}"
+      - name: Upload initial presentation images
+        uses: actions/upload-artifact@v4
+        with:
+          name: reegle-initial-presentation-images
+          path: |
+            src/unit_pair.webp
+            src/usage_scene.webp
+            src/parts.webp
+            src/hero_unit.webp
+            src/hero_usage.webp
+            src/detail_kids.webp
+            presentation-images.sha256
+          if-no-files-found: error
+          retention-days: 1
