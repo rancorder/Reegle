@@ -1,9 +1,10 @@
 name: Export presentation images
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/export-presentation-images-20260802
+      - main
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
